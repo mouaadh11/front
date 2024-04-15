@@ -1,0 +1,14 @@
+.AuthImag{
+    @apply bg-[#e5f1fb] rounded-l-md;
+    /* background: url(../../public/assets/industry_healthcare.svg) no-repeat center center/cover; */
+    position: relative;
+    z-index: 0;
+}
+.BgImg{
+    @apply bg-black rounded-l-md;
+    background: url(../../public/assets/industry_healthcare\ \(1\).svg) no-repeat center ; 
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+}
