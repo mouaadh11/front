@@ -14,15 +14,15 @@ const menuItems = [
     icon: <LuLayoutDashboard size={25} />,
   },
   {
-    id: "products",
-    label: "Products",
-    path: "/products",
+    id: "devices",
+    label: "Devices",
+    path: "/devices",
     icon: <TbBrandProducthunt size={25} />,
   },
   {
-    id: "visitors",
-    label: "Visitors",
-    path: "/visitors",
+    id: "patients",
+    label: "Patients",
+    path: "/patients",
     icon: <PiUsersFourLight size={25} />,
   },
 ];
@@ -35,12 +35,13 @@ export default function Sidbar() {
   };
   return (
     <aside
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear lg:static lg:translate-x-0
+      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-[#74b2eb] duration-300 ease-linear xl:static xl:translate-x-0 shadow-sm
         ${SidbarOpen ? "translate-x-0" : "-translate-x-full"}`}
     >
+      {console.log(SidbarOpen)}
       <div className="flex items-center justify-between gap-2 p-4 px-6 lg:py-6.5">
-        <Link href="/" className="text-[40px]">
-          Analytics
+        <Link href="/" className="text-[40px] text-[#e5f1fb]">
+          App Name
         </Link>
       </div>
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear">
@@ -48,13 +49,12 @@ export default function Sidbar() {
           <div>
             <ul className="mb-6 flex flex-col gap-1.5 ">
               {menuItems.map((item) => (
-                <li
-                  key={item.id}
-                  onClick={() => handlenavigate(item)}
-                >
+                <li key={item.id} onClick={() => handlenavigate(item)}>
                   <label
-                    className={`group relative cursor-pointer w-full  flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-white duration-300 ease-in-out hover:bg-gray-700 ${
-                      pathname.endsWith(item.id) && "bg-gray-800"
+                    className={`group relative cursor-pointer w-full flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:bg-[#62a9eb] hover:text-[#fb7c32] ${
+                      pathname.endsWith(item.id)
+                        ? "bg-[#539fe6] text-[#fb7c32]"
+                        : "" 
                     }`}
                   >
                     {item.icon}

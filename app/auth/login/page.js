@@ -12,7 +12,6 @@ const Login = () => {
   const handleLogin = async (event) => {
     event.preventDefault(); // Prevent default form submission
 
-    // Simulate login logic (replace with your actual authentication logic)
     const email = event.target.email.value;
     const password = event.target.password.value;
 
@@ -23,12 +22,10 @@ const Login = () => {
     });
 
     if (response.ok) {
-      const data = await response.json();
-      console.log(data.message); // "Login successful!"
+      console.log("Login successful");
       router.push("/dashboard"); // Redirect using Next.js router
     } else {
-      // Handle invalid login (display error message, etc.)
-      console.log(response.status)
+      console.log(response.status);
       console.error("Invalid login credentials"); // Replace with appropriate error handling
     }
   };

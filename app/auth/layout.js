@@ -1,3 +1,4 @@
+import { FaTruckLoading } from "react-icons/fa"
 import style from "./authLayout.module.css"
 export default function AuthLayout({ children }) {
     return (
