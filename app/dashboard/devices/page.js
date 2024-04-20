@@ -36,9 +36,10 @@ export default function Device() {
     }, []);
     const buttons = [
         {
-            buttonTitle: 'Add New Device',
+            buttonTitle: 'Configure a New Device',
             clickHandler: () => {
-                router.push('/device/information');
+                // router.push('/device/information');
+                console.log("worked")
             },
         },
     ];
