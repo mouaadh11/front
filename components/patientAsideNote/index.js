@@ -7,7 +7,12 @@ export default function ({ selectedPatient, formattedDate, handleNoteSubmit }) {
   return (
     <div className="2xl:p-10  flex flex-col justify-center">
       <div className="px-4 py-1">
-        <h4 className="font-normal">Note for: </h4>
+        <center>
+          <h2 className=" text-3xl font-semibold mb-3">
+            Add New Note
+          </h2>
+        </center>
+        <h4 className="font-normal">Patient: </h4>
         <h2 className=" text-3xl font-medium">
           {selectedPatient.firstName} {selectedPatient.lastName}
         </h2>

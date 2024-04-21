@@ -6,7 +6,7 @@ export default function ({ children, hiddenElement} ) {
    const {isNoteFormOpen, setIsNoteFormOpen} = useContext(GlobalContext);
   return (
     <div
-      className={`relative w-full h-full  px-6 py-4 bg-white text-black ${
+      className={`relative w-full h-full overflow-auto px-6 py-4 bg-white text-black ${
         ! hiddenElement ? "hidden" : ""
       }`}
     >

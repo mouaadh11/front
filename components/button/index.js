@@ -19,7 +19,7 @@ export default function Button({
     >
       <div className="flex flex-row justify-center gap-2">
         {imgSrc ? (
-          <Image src={imgSrc} alt="Note Icon" width={20} height={20} />
+          <Image src={imgSrc} alt="Note Icon" width={24} height={24} />
         ) : (
           ""
         )}

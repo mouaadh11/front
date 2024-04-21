@@ -8,6 +8,8 @@ export default function GlobalState({ children }) {
   const [SidbarOpen, setSidbarOpen] = useState(false);
   const [isAsideOpen, setIsAsideOpen] = useState(false);
   const [isNoteFormOpen, setIsNoteFormOpen] = useState(false);
+  const [isModifyProfileOpen, setIsModifyProfileOpen] = useState(false);
+
   const [selectedPatient, setSelectedPatient] = useState({});
   return (
     <GlobalContext.Provider
@@ -20,6 +22,8 @@ export default function GlobalState({ children }) {
         setIsNoteFormOpen,
         setSelectedPatient,
         selectedPatient,
+        isModifyProfileOpen,
+        setIsModifyProfileOpen,
       }}
     >
       {children}

@@ -7,6 +7,7 @@ import { GlobalContext } from "@/context";
 import PatientAside from "@/components/patientsAside";
 import PatientAsideNote from "@/components/patientAsideNote";
 import PatientList from "@/components/list/patients";
+import PatientModifyProfile from "@/components/patientModifyProfile";
 
 export default function Patients() {
   const [patients, setPatients] = useState([]); // State to store fetched patients
@@ -14,7 +15,9 @@ export default function Patients() {
   const [error, setError] = useState(null); // State to handle errors
   const { isAsideOpen, setIsAsideOpen } = useContext(GlobalContext);
   const { isNoteFormOpen, setIsNoteFormOpen } = useContext(GlobalContext);
-  const {selectedPatient, setSelectedPatient} = useContext(GlobalContext);
+  const { selectedPatient, setSelectedPatient } = useContext(GlobalContext);
+  const { isModifyProfileOpen, setIsModifyProfileOpen } =
+    useContext(GlobalContext);
   const router = useRouter();
   const today = new Date();
   const formattedDate = today.toLocaleDateString("en-US"); // Adjust locale as needed
@@ -48,25 +51,21 @@ export default function Patients() {
     },
   ];
 
-  
   const handleNoteSubmit = (event) => {
     event.preventDefault();
-    // Add logic to submit the note (e.g., send to server, update state)
     console.log("Submitted note:", event.target.note.value);
   };
 
   return (
     <>
       <Header title="Patients List" buttons={buttons} />
-      <div className=" w-full h-full max-w-full flex flex-row justify-normal overflow-hidden">
+      <div className=" w-full  max-w-full flex flex-row justify-normal overflow-hidden">
         <div
-          className={`py-4 px-6 bg-blue-50 w-full overflow-y-scroll ${
-            isAsideOpen || isNoteFormOpen ? "hidden lg:block" : ""
+          className={`py-4 px-6 bg-blue-50 w-full h-full${
+            isAsideOpen || isNoteFormOpen || isModifyProfileOpen
+              ? "hidden lg:block"
+              : ""
           }`}
-          // style={{
-          //   maxHeight: "calc(100vh - 80px)",
-          //   overflowY: "auto",
-          // }}
         >
           {isLoading && <p className="text-gray-500">Loading patients...</p>}{" "}
           {error && <p className="text-red-500">Error: {error}</p>}{" "}
@@ -78,10 +77,7 @@ export default function Patients() {
         </div>
 
         <RightAside hiddenElement={isAsideOpen}>
-          <PatientAside
-            closeFunction={setIsAsideOpen}
-            selectedPatient={selectedPatient}
-          />
+          <PatientAside />
         </RightAside>
 
         <RightAside hiddenElement={isNoteFormOpen}>
@@ -90,6 +86,12 @@ export default function Patients() {
             formattedDate={formattedDate}
             handleNoteSubmit={handleNoteSubmit}
           />
+        </RightAside>
+        <RightAside hiddenElement={isModifyProfileOpen}>
+         <PatientModifyProfile 
+          formattedDate={formattedDate}
+          handleNoteSubmit={handleNoteSubmit}
+         />
         </RightAside>
       </div>
     </>
