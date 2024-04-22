@@ -1,9 +1,9 @@
 import Button from "@/components/button";
 import { GlobalContext } from "@/context";
 import { useContext } from "react";
-import { Bar } from "react-chartjs-2";
-import { CategoryScale } from 'chart.js';
-import { Chart } from 'chart.js';
+import { Line } from "react-chartjs-2";
+import { PointElement } from 'chart.js';
+import { Chart, LinearScale, CategoryScale, LineElement } from 'chart.js';
 
 
 export default function () {
@@ -11,16 +11,8 @@ export default function () {
   const { isNoteFormOpen, setIsNoteFormOpen } = useContext(GlobalContext);
   const { selectedPatient, setSelectedPatient } = useContext(GlobalContext);
   const { isModifyProfileOpen, setIsModifyProfileOpen } =
-    useContext(GlobalContext);
-    Chart.register(CategoryScale);
-
-  const bpmData = [
-    // Sample BPM readings throughout the day (replace with your actual data)
-    80, 75, 82, 90, 85, 92, 88, 83, 78, 84, 87, 80, 79, 81, 77, 86,
-  ];
-
-  const averageBpm =
-    bpmData.reduce((acc, val) => acc + val, 0) / bpmData.length;
+  useContext(GlobalContext);
+  
   const openNoteForm = () => {
     setIsAsideOpen(false);
     setIsNoteFormOpen(true);
@@ -31,32 +23,99 @@ export default function () {
     setIsNoteFormOpen(false);
     setIsModifyProfileOpen(true);
   };
+    Chart.register(LinearScale);
+    Chart.register(PointElement, CategoryScale, LineElement);
+  
+
+  // Sample data representing BPM values at specific times
+  const data = [
+    { time: '00:00', bpm: 60 },
+    { time: '01:00', bpm: 62 },
+    { time: '06:00', bpm: 65 },
+    { time: '12:00', bpm: 70 },
+    { time: '18:00', bpm: 68 },
+    { time: '23:00', bpm: 64 }
+  ];
+
+  // Function to interpolate BPM value between two data points
+  function interpolateBPM(startTime, startBPM, endTime, endBPM, currentTime) {
+    const startTimeMinutes = convertTimeToMinutes(startTime);
+    const endTimeMinutes = convertTimeToMinutes(endTime);
+    const currentTimeMinutes = convertTimeToMinutes(currentTime);
+
+    const percent = (currentTimeMinutes - startTimeMinutes) / (endTimeMinutes - startTimeMinutes);
+    const interpolatedBPM = startBPM + percent * (endBPM - startBPM);
+    return interpolatedBPM;
+  }
+
+  // Function to convert time string to total minutes since midnight
+  function convertTimeToMinutes(timeString) {
+    const [hours, minutes] = timeString.split(':').map(Number);
+    return hours * 60 + minutes;
+  }
+
+  // Function to generate 24-hour BPM records for Chart.js testing
+  function generate24hBPMRecords(data) {
+    const records = [];
+    const hoursInDay = 24;
+
+    for (let i = 0; i < hoursInDay; i++) {
+      const currentTime = `${String(i).padStart(2, '0')}:00`; // Format time as "HH:00"
+      let bpmValue = null;
+
+      // Find the relevant data points (previous and next) for interpolation
+      for (let j = 0; j < data.length - 1; j++) {
+        const currentData = data[j];
+        const nextData = data[j + 1];
+
+        if (currentTime >= currentData.time && currentTime < nextData.time) {
+          // Interpolate BPM value between currentData and nextData
+          bpmValue = interpolateBPM(
+            currentData.time,
+            currentData.bpm,
+            nextData.time,
+            nextData.bpm,
+            currentTime
+          );
+          break;
+        }
+      }
+
+      if (bpmValue === null) {
+        // If no interpolation was performed, use the last known BPM value
+        bpmValue = data[data.length - 1].bpm;
+      }
+
+      records.push({ time: currentTime, bpm: bpmValue });
+    }
+
+    return records;
+  }
+
+  // Generate 24-hour BPM records for Chart.js testing
+  const generatedRecords = generate24hBPMRecords(data);
+  console.log(generatedRecords);
 
   const chartData = {
-    labels: ["Average BPM"],
+    labels: data.map((item) => item.time),
     datasets: [
       {
-        label: "BPM",
-        data: [averageBpm ? averageBpm : 0],
-        backgroundColor: "rgba(54, 162, 235, 0.2)",
-        borderColor: "rgba(54, 162, 235, 1)",
-        borderWidth: 1,
+        label: 'BPM',
+        data: generatedRecords.map((item) => item.bpm),
+        fill: false,
+        backgroundColor: 'rgb(75, 192, 192)',
+        borderColor: 'rgba(75, 192, 192, 0.2)',
       },
     ],
   };
 
-  const chartOptions = {
+  const options = {
     scales: {
-      yAxes: [
-        {
-          ticks: {
-            beginAtZero: true,
-          },
-        },
-      ],
+      y: {
+        beginAtZero: true,
+      },
     },
   };
-
   return (
     <>
       <div className="flex flex-col h-full">
@@ -154,11 +213,14 @@ export default function () {
             <hr />
           </div>
           <div className="h-full">
-            <Bar data={chartData} options={chartOptions} />
+            <div className='header'>
+              <h1 className='title'>Bar Chart</h1>
+            </div>
+            <Line data={chartData} options={options} />
           </div>
           {selectedPatient &&
-          selectedPatient.notes &&
-          selectedPatient.notes.length > 0 ? (
+            selectedPatient.notes &&
+            selectedPatient.notes.length > 0 ? (
             <div>
               <hr />
               <div className="mt-4 px-4 py-2 bg-blue-50 rounded-md">
