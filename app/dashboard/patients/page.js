@@ -88,10 +88,10 @@ export default function Patients() {
           />
         </RightAside>
         <RightAside hiddenElement={isModifyProfileOpen}>
-         <PatientModifyProfile 
-          formattedDate={formattedDate}
-          handleNoteSubmit={handleNoteSubmit}
-         />
+          <PatientModifyProfile
+            formattedDate={formattedDate}
+            handleNoteSubmit={handleNoteSubmit}
+          />
         </RightAside>
       </div>
     </>

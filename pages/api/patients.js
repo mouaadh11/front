@@ -18,6 +18,14 @@ const patients = [
         date: "2023-02-20",
         note: "Prescription updated. Patient responding well to treatment.",
       },
+      {
+        date: "2023-02-20",
+        note: "Prescription updated. Patient responding well to treatment.",
+      },
+      {
+        date: "2023-02-20",
+        note: "Prescription updated. Patient responding well to treatment.",
+      },
     ],
   },
   {

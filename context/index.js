@@ -9,8 +9,9 @@ export default function GlobalState({ children }) {
   const [isAsideOpen, setIsAsideOpen] = useState(false);
   const [isNoteFormOpen, setIsNoteFormOpen] = useState(false);
   const [isModifyProfileOpen, setIsModifyProfileOpen] = useState(false);
-
+  const [selectedDevice, setSelectedDevice] = useState({});
   const [selectedPatient, setSelectedPatient] = useState({});
+  const [isDeviceAsideOpen, setIsDeviceAsideOpen] = useState(false);
   return (
     <GlobalContext.Provider
       value={{
@@ -24,6 +25,10 @@ export default function GlobalState({ children }) {
         selectedPatient,
         isModifyProfileOpen,
         setIsModifyProfileOpen,
+        selectedDevice,
+        setSelectedDevice,
+        isDeviceAsideOpen,
+        setIsDeviceAsideOpen,
       }}
     >
       {children}
