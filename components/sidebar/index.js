@@ -32,16 +32,11 @@ const menuItems = [
 
 export default function Sidebar() {
   const { sideBarOpen, setSideBarOpen } = useContext(GlobalContext);
-  const {status} = useSession()
 
   const pathName = usePathname();
   const router = useRouter();
 
   const handlenavigate = (getMenuItem) => {
-    if(status === 'unauthenticated') {
-      router.push('/unauth-page')
-      return
-    }
     router.push(getMenuItem.path);
   };
 

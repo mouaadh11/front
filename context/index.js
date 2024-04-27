@@ -5,30 +5,38 @@ import { useState } from "react";
 export const GlobalContext = createContext(null);
 
 export default function GlobalState({ children }) {
-  const [SidbarOpen, setSidbarOpen] = useState(false);
-  const [isAsideOpen, setIsAsideOpen] = useState(false);
-  const [isNoteFormOpen, setIsNoteFormOpen] = useState(false);
-  const [isModifyProfileOpen, setIsModifyProfileOpen] = useState(false);
+  const [devices, setDevices] = useState(null);
+  const [patients, setPatients] = useState(null);
+  const [headerTitle, setHeaderTitle] = useState("");
   const [selectedDevice, setSelectedDevice] = useState({});
   const [selectedPatient, setSelectedPatient] = useState({});
-  const [isDeviceAsideOpen, setIsDeviceAsideOpen] = useState(false);
+  const [buttonsList, setButtonsList] = useState([]);
+  const [asideOpenStatus, setAsideOpenStatus] = useState({
+    sidebar: false,
+    noteForm: false,
+    modifyProfile: false,
+    deviceAside: false,
+    registerPanel: false,
+    configurationPanel: false,
+  });
+
   return (
     <GlobalContext.Provider
       value={{
-        SidbarOpen,
-        setSidbarOpen,
-        isAsideOpen,
-        setIsAsideOpen,
-        isNoteFormOpen,
-        setIsNoteFormOpen,
-        setSelectedPatient,
-        selectedPatient,
-        isModifyProfileOpen,
-        setIsModifyProfileOpen,
+        buttonsList,
+        setButtonsList,
         selectedDevice,
         setSelectedDevice,
-        isDeviceAsideOpen,
-        setIsDeviceAsideOpen,
+        setSelectedPatient,
+        selectedPatient,
+        asideOpenStatus,
+        setAsideOpenStatus,
+        devices,
+        setDevices,
+        patients,
+        setPatients,
+        setHeaderTitle,
+        headerTitle,
       }}
     >
       {children}

@@ -7,6 +7,7 @@ export default function ({ formattedDate }) {
   const { selectedPatient, setSelectedPatient } = useContext(GlobalContext);
   const { isModifyProfileOpen, setIsModifyProfileOpen } =
     useContext(GlobalContext);
+  const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
 
   const [formData, setFormData] = useState(selectedPatient);
   useEffect(() => {
@@ -25,15 +26,33 @@ export default function ({ formattedDate }) {
     e.preventDefault();
     onSubmit(formData);
   };
+  const handleClose = () => {
+    setAsideOpenStatus(
+      Object.keys(asideOpenStatus).reduce((acc, key) => {
+        acc[key] = false; // Set all panels to be closed (false)
+        return acc;
+      }, {})
+    );
+  };
+  const handleOpen = (panel) => {
+    setAsideOpenStatus(
+      Object.keys(asideOpenStatus).reduce((acc, key) => {
+        acc[key] = key === panel;
+        return acc;
+      }, {})
+    );
+  };
   return (
     <>
-      <div className="2xl:p-10  flex flex-col justify-center">
+      <div className="2xl:p-10 px-6 py-4 flex flex-col justify-center">
         <div className="px-4 py-1">
-          <center><h2 className=" text-3xl font-semibold mb-3">Modify Patient Informations</h2></center>
+          <center>
+            <h2 className=" text-3xl font-semibold mb-3">
+              Modify Patient Informations
+            </h2>
+          </center>
           <h4 className="font-normal">Patient ID: </h4>
-          <h2 className=" text-3xl font-medium">
-            {selectedPatient.patientId}
-          </h2>
+          <h2 className=" text-3xl font-medium">{selectedPatient.patientId}</h2>
           <h3 className="py-1 font-extralight">Date: {formattedDate}</h3>
         </div>
 
@@ -108,11 +127,7 @@ export default function ({ formattedDate }) {
             />
 
             <Button
-              handler={() => {
-                setIsAsideOpen(false);
-                setIsModifyProfileOpen(false);
-                setIsNoteFormOpen(false);
-              }}
+              handler={handleClose}
               styling={"w-full px-5 mt-3 bg-orange-400 hover:bg-red-600"}
               title={"Cancel"}
             />
@@ -121,8 +136,7 @@ export default function ({ formattedDate }) {
         <div className="absolute top-0 right-0 mt-4 mr-6">
           <Button
             handler={() => {
-              setIsModifyProfileOpen(false);
-              setIsAsideOpen(true);
+              handleOpen("sidebar");
             }}
             imgSrc={"/back.svg"}
             styling={"hover:bg-blue-300"}

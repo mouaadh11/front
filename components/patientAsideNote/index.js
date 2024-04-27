@@ -4,13 +4,28 @@ import { useContext } from "react";
 export default function ({ selectedPatient, formattedDate, handleNoteSubmit }) {
   const { isAsideOpen, setIsAsideOpen } = useContext(GlobalContext);
   const { isNoteFormOpen, setIsNoteFormOpen } = useContext(GlobalContext);
+  const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
+  const handleOpen = (panel) => {
+    setAsideOpenStatus(
+      Object.keys(asideOpenStatus).reduce((acc, key) => {
+        acc[key] = key === panel;
+        return acc;
+      }, {})
+    );
+  };
+  const handleClose = () => {
+    setAsideOpenStatus(
+      Object.keys(asideOpenStatus).reduce((acc, key) => {
+        acc[key] = false; // Set all panels to be closed (false)
+        return acc;
+      }, {})
+    );
+  };
   return (
-    <div className="2xl:p-10  flex flex-col justify-center">
+    <div className="2xl:p-10 px-6 py-4 flex flex-col justify-center">
       <div className="px-4 py-1">
         <center>
-          <h2 className=" text-3xl font-semibold mb-3">
-            Add New Note
-          </h2>
+          <h2 className=" text-3xl font-semibold mb-3">Add New Note</h2>
         </center>
         <h4 className="font-normal">Patient: </h4>
         <h2 className=" text-3xl font-medium">
@@ -47,17 +62,13 @@ export default function ({ selectedPatient, formattedDate, handleNoteSubmit }) {
         <Button
           styling={"w-full bg-orange-400 hover:bg-red-600"}
           title={"Cancel"}
-          handler={() => {
-            setIsNoteFormOpen(false);
-            setIsAsideOpen(false);
-          }}
+          handler={handleClose}
         ></Button>
       </form>
       <div className="absolute top-0 right-0 mt-4 mr-6">
         <Button
           handler={() => {
-            setIsNoteFormOpen(false);
-            setIsAsideOpen(true);
+            handleOpen("sidebar");
           }}
           imgSrc={"/back.svg"}
           styling={"hover:bg-blue-300"}

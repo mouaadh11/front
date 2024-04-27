@@ -1,11 +1,12 @@
 'use client';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { GlobalContext } from '../../context';
 import { useRouter } from 'next/navigation';
 import Button from '@/components/button';
 export default function Header(props) {
     const { SidbarOpen, setSidbarOpen } = useContext(GlobalContext);
-    const router = useRouter();
+    const {isRegisterPOpen} = useContext(GlobalContext);
+    
     return (
         <header className='sticky top-0 z-999 w-full bg-[#e5f1fb] drop-shadow-md'>
             <div className='py-4 px-4 shadow-2 flex flex-row '>

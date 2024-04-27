@@ -1,39 +1,25 @@
-import Image from "next/image";
 import { GlobalContext } from "@/context";
 import { useContext, useState } from "react";
+import Button from "../button";
 export default function ({ devices }) {
-  const { isModifyProfileOpen, setIsModifyProfileOpen } =
-    useContext(GlobalContext);
-
   const { selectedDevice, setSelectedDevice } = useContext(GlobalContext);
-  const { isDeviceAsideOpen, setIsDeviceAsideOpen } = useContext(GlobalContext);
-
-  const toggleAside = (device) => {
-    console.log("selectedDevice", selectedDevice)
-    if (!selectedDevice || selectedDevice.deviceId === device.deviceId) {
-      setIsDeviceAsideOpen(!isDeviceAsideOpen);
-    } else {
-      setSelectedDevice(device);
-      setIsDeviceAsideOpen(true);
-    }
-    console.log("deviceAside:", isDeviceAsideOpen);
-  };
-
-  const toggleConfigure = (device) => {
-    if (!selectedPatient || selectedPatient.patientId === patient.patientId) {
-      setIsAsideOpen(false);
-      setIsModifyProfileOpen(false);
-      setIsNoteFormOpen(!isNoteFormOpen);
-    } else if (!(isAsideOpen || isModifyProfileOpen)) {
-      setSelectedPatient(patient);
-      setIsNoteFormOpen(true); // Open the aside bar for the new patient
-    }
-  };
+  const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
     onChange && onChange(event.target.value); // Optional callback for parent handling
+  };
+  
+  const handleOpen = (panel, device) => {
+    console.log(selectedDevice);
+    setSelectedDevice(device);
+    setAsideOpenStatus(
+      Object.keys(asideOpenStatus).reduce((acc, key) => {
+        acc[key] = key === panel;
+        return acc;
+      }, {})
+    );
   };
   return (
     <>
@@ -49,7 +35,6 @@ export default function ({ devices }) {
           <button
             type="button"
             className="absolute right-3 top-1/2 -translate-y-1/2 px-2 py-1 rounded-md bg-blue-200 hover:bg-[#fb7c32] focus:outline-none focus:ring-1 focus:ring-[#fb7c32] focus:border-[#fb7c32]"
-            onClick={toggleAside}
           >
             <svg
               className="w-4 h-4 fill-current"
@@ -73,7 +58,7 @@ export default function ({ devices }) {
               >
                 <button
                   className="w-full py-4 px-4"
-                  onClick={() => toggleAside(device)}
+                  onClick={() => handleOpen("deviceAside", device)}
                 >
                   <div className="flex flex-row items-center">
                     <div className="infromation">
@@ -98,17 +83,11 @@ export default function ({ devices }) {
                     </div>
                   </div>
                 </button>
-                <button
-                  onClick={() => toggleConfigure(device)}
-                  className="mr-4 w-fit h-fit flex items-center px-2 py-2 bg-blue-200 text-white rounded-md hover:bg-[#fb7c32] "
-                >
-                  <Image
-                    src="/configure.svg"
-                    alt="Note Icon"
-                    width={20}
-                    height={20}
-                  />
-                </button>
+                <Button
+                  handler={() => handleOpen("configurationPanel", device)}
+                  imgSrc={"/configure.svg"}
+                  styling={"bg-blue-200 text-white mr-4"}
+                ></Button>
               </li>
             ))}
           </ul>

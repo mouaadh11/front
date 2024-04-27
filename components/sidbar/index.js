@@ -51,9 +51,9 @@ export default function Sidbar() {
               {menuItems.map((item) => (
                 <li key={item.id} onClick={() => handlenavigate(item)}>
                   <label
-                    className={`group relative cursor-pointer w-full flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:bg-[#62a9eb] hover:text-[#fb7c32] ${
+                    className={`group relative cursor-pointer w-full flex items-center gap-2.5 rounded-sm py-2 px-4 font-semibold duration-300 ease-in-out hover:bg-[#62a9eb] hover:text-[#fb7c32] ${
                       pathname.endsWith(item.id)
-                        ? "bg-[#539fe6] text-[#fb7c32]"
+                        ? "bg-[#62a9eb] text-orange-300"
                         : "" 
                     }`}
                   >

@@ -26,6 +26,22 @@ const patients = [
         date: "2023-02-20",
         note: "Prescription updated. Patient responding well to treatment.",
       },
+      {
+        date: "2023-04-05",
+        note: "Follow-up visit scheduled for next month.",
+      },
+      {
+        date: "2023-02-20",
+        note: "Prescription updated. Patient responding well to treatment.",
+      },
+      {
+        date: "2023-02-20",
+        note: "Prescription updated. Patient responding well to treatment.",
+      },
+      {
+        date: "2023-02-20",
+        note: "Prescription updated. Patient responding well to treatment.",
+      },
     ],
   },
   {
@@ -46,6 +62,27 @@ const patients = [
       {
         date: "2023-02-05",
         note: "Medication adjustment needed. Patient reported side effects.",
+      },
+    ],
+  },
+  {
+    patientId: 103,
+    firstName: "Carol",
+    lastName: "Adams",
+    deviceId: 103,
+    age: 50,
+    lastUpdateDate: "2023-02-20",
+    height: 160,
+    weight: 65,
+    firstVisitDate: "2023-03-05",
+    notes: [
+      {
+        date: "2023-03-10",
+        note: "Lab results received. Discussion needed on treatment options.",
+      },
+      {
+        date: "2023-04-02",
+        note: "Referral sent for further consultation.",
       },
     ],
   },
