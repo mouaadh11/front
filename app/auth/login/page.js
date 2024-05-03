@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import style from "./login.module.css";
-import { MdAlternateEmail, MdOutlinePassword } from "react-icons/md";
+import { MdCall, MdOutlinePassword } from "react-icons/md";
 import { useRouter } from "next/navigation";
 
 const Login = () => {
@@ -12,7 +12,7 @@ const Login = () => {
   const handleLogin = async (event) => {
     event.preventDefault(); // Prevent default form submission
 
-    const email = event.target.email.value;
+    const email = event.target.tel.value;
     const password = event.target.password.value;
 
     const response = await fetch("/api/login", {
@@ -40,13 +40,13 @@ const Login = () => {
         <form className="flex flex-col gap-5" onSubmit={handleLogin}>
           <div className={style.input_group}>
             <input
-              type="email"
-              name="email"
-              placeholder="email"
+              type="tel"
+              name="tel"
+              placeholder="Phone number"
               className={style.input_text}
             ></input>
             <span className="icon flex items-center px-4">
-              <MdAlternateEmail size={20} />
+              <MdCall size={20} />
             </span>
           </div>
           <div className={style.input_group}>

@@ -2,11 +2,8 @@ import Button from "../button";
 import { GlobalContext } from "@/context";
 import { useContext, useState, useEffect } from "react";
 export default function ({ formattedDate }) {
-  const { isAsideOpen, setIsAsideOpen } = useContext(GlobalContext);
-  const { isNoteFormOpen, setIsNoteFormOpen } = useContext(GlobalContext);
-  const { selectedPatient, setSelectedPatient } = useContext(GlobalContext);
-  const { isModifyProfileOpen, setIsModifyProfileOpen } =
-    useContext(GlobalContext);
+
+  const { selectedPatient } = useContext(GlobalContext);
   const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
 
   const [formData, setFormData] = useState(selectedPatient);

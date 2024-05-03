@@ -68,15 +68,33 @@ export default function ConfigureDevice() {
       }, {})
     );
   };
+  const handleOpen = (panel) => {
+    setAsideOpenStatus(
+      Object.keys(asideOpenStatus).reduce((acc, key) => {
+        acc[key] = key === panel;
+        return acc;
+      }, {})
+    );
+  };
   return (
     <>
       <div className="flex flex-col px-6 py-4">
         <div className="flex flex-row justify-end mb-3 gap-4">
-          <Button
-            handler={handleClose}
-            imgSrc={"/close2.svg"}
-            styling={"hover:bg-blue-300"}
-          ></Button>
+          { selectedPatient.patientId ? (
+            <Button
+              handler={() => {
+                handleOpen("sidebar");
+              }}
+              imgSrc={"/back.svg"}
+              styling={"hover:bg-blue-300"}
+            ></Button>
+          ) : (
+            <Button
+              handler={handleClose}
+              imgSrc={"/close2.svg"}
+              styling={"hover:bg-blue-300"}
+            ></Button>
+          )}
         </div>
         <div>
           <form onSubmit={handleConfigure}>

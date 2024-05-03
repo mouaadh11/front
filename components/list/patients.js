@@ -91,6 +91,11 @@ export default function ({ patients }) {
                 </div>
               </button>
               <Button
+                handler={() => handleOpen("newAppointment", patient)}
+                styling={"mr-4 bg-blue-200 text-white"}
+                imgSrc={"/appointment.svg"}
+              />
+              <Button
                 handler={() => handleOpen("configurationPanel", patient)}
                 styling={"mr-4 bg-blue-200 text-white"}
                 imgSrc={"/configure.svg"}

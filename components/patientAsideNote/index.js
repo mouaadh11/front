@@ -2,8 +2,6 @@ import Button from "../button";
 import { GlobalContext } from "@/context";
 import { useContext } from "react";
 export default function ({ selectedPatient, formattedDate, handleNoteSubmit }) {
-  const { isAsideOpen, setIsAsideOpen } = useContext(GlobalContext);
-  const { isNoteFormOpen, setIsNoteFormOpen } = useContext(GlobalContext);
   const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
   const handleOpen = (panel) => {
     setAsideOpenStatus(

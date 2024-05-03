@@ -58,6 +58,14 @@ export default function () {
         <div className="flex flex-row justify-end mb-3 gap-4">
           <Button
             handler={() => {
+              handleOpen("newAppointment");
+            }}
+            imgSrc={"/appointment.svg"}
+            styling={"bg-blue-300"}
+            title={"Appointment"}
+          ></Button>
+          <Button
+            handler={() => {
               handleOpen("configurationPanel");
             }}
             imgSrc={"/configure.svg"}

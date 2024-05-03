@@ -18,8 +18,6 @@ export default function DashboardLayout({ children }) {
 
   useEffect(() => {
     const fetchDevices = async () => {
-      setError(null);
-
       try {
         const response = await fetch("/api/devices"); // Adjust API endpoint
         if (!response.ok) {
@@ -27,8 +25,11 @@ export default function DashboardLayout({ children }) {
         }
         const data = await response.json();
         setDevices(data);
+        console.log(data);
       } catch (err) {
         setError(err.message);
+      } finally {
+        setIsLoading(false); // Set loading state to false after fetch (success or error)
       }
     };
 
@@ -47,8 +48,8 @@ export default function DashboardLayout({ children }) {
       }
     };
 
-    fetchPatients();
     fetchDevices();
+    fetchPatients();
   }, []);
 
   return (

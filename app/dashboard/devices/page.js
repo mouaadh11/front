@@ -6,10 +6,10 @@ import RighAside from "@/components/rightAside";
 import DeviceAside from "@/components/DeviceAside";
 
 export default function Device() {
-  const { devices, setDevices } = useContext(GlobalContext); // State to store fetched devices
+  const { devices, } = useContext(GlobalContext); // State to store fetched devices
   const { setButtonsList } = useContext(GlobalContext);
   const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
-  const { headerTitle, setHeaderTitle } = useContext(GlobalContext);
+  const { setHeaderTitle } = useContext(GlobalContext);
 
   const deviceButtons = [
     {

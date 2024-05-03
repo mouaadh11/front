@@ -2,6 +2,10 @@
   @apply flex border rounded-xl;
   position: relative;
 }
+
+.input_text[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+  }
 .input_text {
     @apply w-full p-4 border rounded-xl bg-slate-50;
     @apply focus:outline-none border-none;

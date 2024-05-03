@@ -1,9 +1,9 @@
 "use client";
 import Cookies from "js-cookie";
 import { Line } from "react-chartjs-2";
-import Header from "@/components/header";
 import { useRouter } from "next/navigation";
 import DashboardNotifiction from "@/components/dashboardNotification";
+import Appointment from "@/components/appointment";
 import DashboardCards from "@/components/dashboardCards";
 import {
   CategoryScale,
@@ -28,7 +28,9 @@ export default function Dashboard() {
     Tooltip
   );
   const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
-  const { headerTitle, setHeaderTitle } = useContext(GlobalContext);
+  const { setHeaderTitle } = useContext(GlobalContext);
+  const { setSelectedDevice, setSelectedPatient } = useContext(GlobalContext);
+  
 
   const dashboardButtons = [
     {
@@ -61,84 +63,163 @@ export default function Dashboard() {
       },
     },
   ];
-  const { buttonsList, setButtonsList } = useContext(GlobalContext);
+  const { setButtonsList } = useContext(GlobalContext);
+  
   useEffect(() => {
     setButtonsList(dashboardButtons);
     setHeaderTitle("Dashboard");
-  }, [asideOpenStatus["registerPanel"]]);
+    setAsideOpenStatus(
+      Object.keys(asideOpenStatus).reduce((acc, key) => {
+        acc[key] = false; // Set all panels to be closed (false)
+        return acc;
+      }, {})
+    );
+    setSelectedPatient({});
+    setSelectedDevice({});
+  }, []);
 
+  const Appointments = [
+    // {
+    //   title: "Appointment Reminder",
+    //   content:
+    //     "Your upcoming appointment with Dr. Smith is scheduled for next Monday at 10:00 AM.",
+    //   patientName: "Alice Johnson",
+    // },
+    // {
+    //   title: "Prescription Refill Request",
+    //   content:
+    //     "Your prescription for [Medication Name] is due for a refill. Please contact our pharmacy at [Phone Number] to request a refill.",
+    //   patientName: "Alice Johnson",
+    // },
+    // {
+    //   title: "Test Result Notification",
+    //   content:
+    //     "Your recent blood test results are available. Please schedule a follow-up appointment with your healthcare provider to discuss the findings.",
+    //   patientName: "Alice Johnson",
+    // },
+    // {
+    //   title: "Appointment Reminder",
+    //   content:
+    //     "Your upcoming appointment with Dr. Smith is scheduled for next Monday at 10:00 AM.",
+    //   patientName: "Alice Johnson",
+    // },
+    // {
+    //   title: "Prescription Refill Request",
+    //   content:
+    //     "Your prescription for [Medication Name] is due for a refill. Please contact our pharmacy at [Phone Number] to request a refill.",
+    //   patientName: "Alice Johnson",
+    // },
+    // {
+    //   title: "Test Result Notification",
+    //   content:
+    //     "Your recent blood test results are available. Please schedule a follow-up appointment with your healthcare provider to discuss the findings.",
+    //   patientName: "Alice Johnson",
+    // },
+    // {
+    //   title: "Appointment Reminder",
+    //   content:
+    //     "Your upcoming appointment with Dr. Smith is scheduled for next Monday at 10:00 AM.",
+    //   patientName: "Alice Johnson",
+    // },
+    // {
+    //   title: "Prescription Refill Request",
+    //   content:
+    //     "Your prescription for [Medication Name] is due for a refill. Please contact our pharmacy at [Phone Number] to request a refill.",
+    //   patientName: "Alice Johnson",
+    // },
+    // {
+    //   title: "Test Result Notification",
+    //   content:
+    //     "Your recent blood test results are available. Please schedule a follow-up appointment with your healthcare provider to discuss the findings.",
+    //   patientName: "Alice Johnson",
+    // },
+    // {
+    //   title: "Appointment Reminder",
+    //   content:
+    //     "Your upcoming appointment with Dr. Smith is scheduled for next Monday at 10:00 AM.",
+    //   patientName: "Alice Johnson",
+    // },
+    {
+      patient: "El Gid",
+      content: "Regular diagnostic",
+      hour:"10:94 AM"
+    },
+    {
+      patient: "3abda9a 3aymoucha",
+      content: "device mouting",
+      hour: "10:94 AM",
+    },
+  ];
   const medicalNotifications = [
+    // {
+    //   title: "Appointment Reminder",
+    //   content:
+    //     "Your upcoming appointment with Dr. Smith is scheduled for next Monday at 10:00 AM.",
+    //   patientName: "Alice Johnson",
+    // },
+    // {
+    //   title: "Prescription Refill Request",
+    //   content:
+    //     "Your prescription for [Medication Name] is due for a refill. Please contact our pharmacy at [Phone Number] to request a refill.",
+    //   patientName: "Alice Johnson",
+    // },
+    // {
+    //   title: "Test Result Notification",
+    //   content:
+    //     "Your recent blood test results are available. Please schedule a follow-up appointment with your healthcare provider to discuss the findings.",
+    //   patientName: "Alice Johnson",
+    // },
+    // {
+    //   title: "Appointment Reminder",
+    //   content:
+    //     "Your upcoming appointment with Dr. Smith is scheduled for next Monday at 10:00 AM.",
+    //   patientName: "Alice Johnson",
+    // },
+    // {
+    //   title: "Prescription Refill Request",
+    //   content:
+    //     "Your prescription for [Medication Name] is due for a refill. Please contact our pharmacy at [Phone Number] to request a refill.",
+    //   patientName: "Alice Johnson",
+    // },
+    // {
+    //   title: "Test Result Notification",
+    //   content:
+    //     "Your recent blood test results are available. Please schedule a follow-up appointment with your healthcare provider to discuss the findings.",
+    //   patientName: "Alice Johnson",
+    // },
+    // {
+    //   title: "Appointment Reminder",
+    //   content:
+    //     "Your upcoming appointment with Dr. Smith is scheduled for next Monday at 10:00 AM.",
+    //   patientName: "Alice Johnson",
+    // },
+    // {
+    //   title: "Prescription Refill Request",
+    //   content:
+    //     "Your prescription for [Medication Name] is due for a refill. Please contact our pharmacy at [Phone Number] to request a refill.",
+    //   patientName: "Alice Johnson",
+    // },
+    // {
+    //   title: "Test Result Notification",
+    //   content:
+    //     "Your recent blood test results are available. Please schedule a follow-up appointment with your healthcare provider to discuss the findings.",
+    //   patientName: "Alice Johnson",
+    // },
+    // {
+    //   title: "Appointment Reminder",
+    //   content:
+    //     "Your upcoming appointment with Dr. Smith is scheduled for next Monday at 10:00 AM.",
+    //   patientName: "Alice Johnson",
+    // },
     {
-      title: "Appointment Reminder",
-      content:
-        "Your upcoming appointment with Dr. Smith is scheduled for next Monday at 10:00 AM.",
-      patientName: "Alice Johnson",
+      title: "El Gid",
+      content: "Rgad, kan lase9",
+      patientName: "8:94 AM",
     },
     {
-      title: "Prescription Refill Request",
-      content:
-        "Your prescription for [Medication Name] is due for a refill. Please contact our pharmacy at [Phone Number] to request a refill.",
-      patientName: "Alice Johnson",
-    },
-    {
-      title: "Test Result Notification",
-      content:
-        "Your recent blood test results are available. Please schedule a follow-up appointment with your healthcare provider to discuss the findings.",
-      patientName: "Alice Johnson",
-    },
-    {
-      title: "Appointment Reminder",
-      content:
-        "Your upcoming appointment with Dr. Smith is scheduled for next Monday at 10:00 AM.",
-      patientName: "Alice Johnson",
-    },
-    {
-      title: "Prescription Refill Request",
-      content:
-        "Your prescription for [Medication Name] is due for a refill. Please contact our pharmacy at [Phone Number] to request a refill.",
-      patientName: "Alice Johnson",
-    },
-    {
-      title: "Test Result Notification",
-      content:
-        "Your recent blood test results are available. Please schedule a follow-up appointment with your healthcare provider to discuss the findings.",
-      patientName: "Alice Johnson",
-    },
-    {
-      title: "Appointment Reminder",
-      content:
-        "Your upcoming appointment with Dr. Smith is scheduled for next Monday at 10:00 AM.",
-      patientName: "Alice Johnson",
-    },
-    {
-      title: "Prescription Refill Request",
-      content:
-        "Your prescription for [Medication Name] is due for a refill. Please contact our pharmacy at [Phone Number] to request a refill.",
-      patientName: "Alice Johnson",
-    },
-    {
-      title: "Test Result Notification",
-      content:
-        "Your recent blood test results are available. Please schedule a follow-up appointment with your healthcare provider to discuss the findings.",
-      patientName: "Alice Johnson",
-    },
-    {
-      title: "Appointment Reminder",
-      content:
-        "Your upcoming appointment with Dr. Smith is scheduled for next Monday at 10:00 AM.",
-      patientName: "Alice Johnson",
-    },
-    {
-      title: "Prescription Refill Request",
-      content:
-        "Your prescription for [Medication Name] is due for a refill. Please contact our pharmacy at [Phone Number] to request a refill.",
-      patientName: "Alice Johnson",
-    },
-    {
-      title: "Test Result Notification",
-      content:
-        "Your recent blood test results are available. Please schedule a follow-up appointment with your healthcare provider to discuss the findings.",
-      patientName: "Alice Johnson",
+      title: "Copter",
+      content: "El Makhbat El Makhbet Sa7bi",
+      patientName: "10:94 AM",
     },
   ];
   setTimeout(() => {
@@ -206,8 +287,8 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="flex flex-row justify-between w-full h-fit  overflow-hidden bg-blue-100">
-        <div className=" w-full h-fit flex flex-col my-auto justify-around gap-10">
+      <div className="flex flex-row w-full h-fit justify-between overflow-hidden bg-blue-100">
+        <div className="w-full h-[85vh] justify-between flex flex-col my-auto">
           <DashboardCards />
           <div className="bg-white h-fit flex flex-col justify-center items-center m-2 p-2 rounded-md">
             <h2 className="text-gray-600 font-bold mb-10">
@@ -216,7 +297,10 @@ export default function Dashboard() {
             <Line data={data} options={options} />
           </div>
         </div>
-        <DashboardNotifiction notifications={medicalNotifications} />
+        <div className="w-full flex flex-row ">
+          <DashboardNotifiction notifications={medicalNotifications} />
+          <Appointment Appointments={Appointments} />
+        </div>
       </div>
     </>
   );

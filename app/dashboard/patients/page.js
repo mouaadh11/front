@@ -6,13 +6,14 @@ import PatientAside from "@/components/patientsAside";
 import PatientAsideNote from "@/components/patientAsideNote";
 import PatientList from "@/components/list/patients";
 import PatientModifyProfile from "@/components/patientModifyProfile";
+import AsdieAppointment from "@/components/asideAppointment";
 
 export default function Patients() {
   const { patients } = useContext(GlobalContext); // State to store fetched patients
   const { selectedPatient } = useContext(GlobalContext);
   const { setButtonsList } = useContext(GlobalContext);
   const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
-  const { headerTitle, setHeaderTitle } = useContext(GlobalContext);
+  const { setHeaderTitle } = useContext(GlobalContext);
 
   const patientButtons = [
     {
@@ -63,6 +64,9 @@ export default function Patients() {
         </div>
         <RightAside hiddenElement={asideOpenStatus["sidebar"]}>
           <PatientAside />
+        </RightAside>
+        <RightAside hiddenElement={asideOpenStatus["newAppointment"]}>
+          <AsdieAppointment />
         </RightAside>
 
         <RightAside hiddenElement={asideOpenStatus["noteForm"]}>

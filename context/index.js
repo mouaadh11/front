@@ -18,6 +18,7 @@ export default function GlobalState({ children }) {
     deviceAside: false,
     registerPanel: false,
     configurationPanel: false,
+    newAppointment: false
   });
 
   return (
