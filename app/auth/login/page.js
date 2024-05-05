@@ -12,13 +12,13 @@ const Login = () => {
   const handleLogin = async (event) => {
     event.preventDefault(); // Prevent default form submission
 
-    const email = event.target.tel.value;
+    const phonenum = event.target.tel.value;
     const password = event.target.password.value;
 
-    const response = await fetch("/api/login", {
+    const response = await fetch("http://localhost:5000/auth/signin", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ phonenum, password }),
     });
 
     if (response.ok) {

@@ -3,17 +3,17 @@ import { GlobalContext } from "@/context";
 import { useContext, useState } from "react";
 
 export default function RegisterNewPatient() {
-  const { isRegisterPOpen, setIsRegisterPOpen } = useContext(GlobalContext);
   const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    birthDate: "",
-    phoneNumber: "", // Required field
-    email: "", // Optional field
-    height: "",
-    weight: "",
-    bloodType: "",
+    firstname: "",
+    lastname: "",
+    DateOfBirth: "",
+    phoneNum: "",
+    email: "", 
+    height: 0,
+    weight: 0,
+    BloodType: "",
+
   });
 
   const handleChange = (event) => {
@@ -21,10 +21,40 @@ export default function RegisterNewPatient() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent default form submission behavior
-    console.log("Form Submitted:", formData); // You can use this data to submit to an API or database
-    // Implement form submission logic here
+    setFormData({...formData, height:  parseInt(formData.height), weight: parseInt(formData.weight), password: formData.DateOfBirth })
+    const requestBody = JSON.stringify(formData); // Prepare request body
+    console.log(requestBody)
+    try {
+      const response = await fetch(
+        "http://localhost:5000/auth/signup",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: requestBody,
+        }
+      );
+
+      if (!response.ok) {
+        // Handle errors (e.g., display an error message to the user)
+        const errorData = await response.json();
+        console.error("Registration failed:", errorData);
+        alert(
+          "Registration failed. Please check the entered details and try again."
+        ); // Or use a more user-friendly error display mechanism
+        return;
+      }
+
+      console.log("Patient registration successful:", await response.json());
+      // Handle successful registration (e.g., redirect to a confirmation page, display a success message)
+      alert("Registration successful! You can now log in."); // Or use a more appropriate success message
+    } catch (error) {
+      console.error("Registration error:", error);
+      alert(
+        "An unexpected error occurred during registration. Please try again later."
+      ); // Or use a more user-friendly error message
+    }
   };
   const handleClose = () => {
     setAsideOpenStatus(
@@ -56,9 +86,9 @@ export default function RegisterNewPatient() {
                   <label htmlFor="firstName">First Name:</label>
                   <input
                     type="text"
-                    name="firstName"
+                    name="firstname"
                     id="firstName"
-                    value={formData.firstName}
+                    value={formData.firstname}
                     onChange={handleChange}
                     required
                     className="mt-2 resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -68,9 +98,9 @@ export default function RegisterNewPatient() {
                   <label htmlFor="lastName">Last Name:</label>
                   <input
                     type="text"
-                    name="lastName"
+                    name="lastname"
                     id="lastName"
-                    value={formData.lastName}
+                    value={formData.lastname}
                     onChange={handleChange}
                     required
                     className="mt-2 resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -82,9 +112,9 @@ export default function RegisterNewPatient() {
                 <label htmlFor="birthDate">Birth Date:</label>
                 <input
                   type="date"
-                  name="birthDate"
+                  name="DateOfBirth"
                   id="birthDate"
-                  value={formData.birthDate}
+                  value={formData.DateOfBirth}
                   onChange={handleChange}
                   className="mt-2 resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 />
@@ -93,9 +123,9 @@ export default function RegisterNewPatient() {
                 <label htmlFor="phoneNumber">Phone Number (Required):</label>
                 <input
                   type="tel"
-                  name="phoneNumber"
+                  name="phoneNum"
                   id="phoneNumber"
-                  value={formData.phoneNumber}
+                  value={formData.phoneNum}
                   onChange={handleChange}
                   required
                   className="mt-2 resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -139,9 +169,9 @@ export default function RegisterNewPatient() {
               <div className="flex flex-col gap-1 mb-4">
                 <label htmlFor="bloodType">Blood Type:</label>
                 <select
-                  name="bloodType"
+                  name="BloodType"
                   id="bloodType"
-                  value={formData.bloodType}
+                  value={formData.BloodType}
                   onChange={handleChange}
                   className="mt-2 resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >

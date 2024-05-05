@@ -19,7 +19,7 @@ export default function DashboardLayout({ children }) {
   useEffect(() => {
     const fetchDevices = async () => {
       try {
-        const response = await fetch("/api/devices"); // Adjust API endpoint
+        const response = await fetch("http://localhost:5000/user/devices"); // Adjust API endpoint
         if (!response.ok) {
           throw new Error("Failed to fetch devices");
         }
@@ -37,7 +37,7 @@ export default function DashboardLayout({ children }) {
       setError(null);
 
       try {
-        const response = await fetch("/api/patients/"); // Adjust API endpoint
+        const response = await fetch("http://localhost:5000/user/patients"); // Adjust API endpoint
         if (!response.ok) {
           throw new Error("Failed to fetch patients");
         }
