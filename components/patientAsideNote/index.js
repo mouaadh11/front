@@ -1,8 +1,9 @@
 import Button from "../button";
 import { GlobalContext } from "@/context";
 import { useContext } from "react";
-export default function ({ selectedPatient, formattedDate, handleNoteSubmit }) {
+export default function ({ formattedDate }) {
   const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
+  const { selectedPatient } = useContext(GlobalContext);
   const handleOpen = (panel) => {
     setAsideOpenStatus(
       Object.keys(asideOpenStatus).reduce((acc, key) => {
@@ -10,6 +11,50 @@ export default function ({ selectedPatient, formattedDate, handleNoteSubmit }) {
         return acc;
       }, {})
     );
+  };
+  console.log("Selected Patient", selectedPatient);
+  const handleNoteSubmit = async (event) => {
+    event.preventDefault(); // Prevent default form submission
+
+    // Extract form data
+    const noteTitle = event.target.elements.noteTitle.value;
+    const noteContent = event.target.elements.note.value;
+    const patientId = selectedPatient.id; // Assuming 'selectedPatient' has an 'id' property
+    const doctor = JSON.parse(localStorage.getItem("user"));
+    console.log(doctor);
+    // Construct request body
+    const formData = JSON.stringify({
+      AuthorId: doctor.id,
+      NoteTitle: noteTitle,
+      NoteContent: noteContent,
+    });
+
+    try {
+      // Send POST request
+      const response = await fetch(
+        `http://localhost:5000/user/patients/${patientId}/notes`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorizatoin: "Bearer " + localStorage.getItem("token"),
+          },
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Error creating note: ${response.status}`);
+      }
+
+      // Handle success (e.g., display success message, clear form, close panel)
+      console.log("Note created successfully!");
+      // You might want to clear the form fields here
+      // handleClose(); // Call this to close the panel if desired
+    } catch (error) {
+      console.error("Error creating note:", error);
+      // Handle errors (e.g., display error message to user)
+    }
   };
   const handleClose = () => {
     setAsideOpenStatus(

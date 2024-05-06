@@ -12,7 +12,7 @@ export default function DashboardLayout({ children }) {
   const { asideOpenStatus } = useContext(GlobalContext);
   const { devices, setDevices } = useContext(GlobalContext);
   const { patients, setPatients } = useContext(GlobalContext);
-  const {headerTitle, setHeaderTitle} = useContext(GlobalContext);
+  const { headerTitle, setHeaderTitle } = useContext(GlobalContext);
 
   const [error, setError] = useState(null);
 
@@ -35,20 +35,38 @@ export default function DashboardLayout({ children }) {
 
     const fetchPatients = async () => {
       setError(null);
-
       try {
-        const response = await fetch("http://localhost:5000/user/patients"); // Adjust API endpoint
+        const response = await fetch("http://localhost:5000/user/patients", {
+          method: "GET",
+          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        }); // Adjust API endpoint
         if (!response.ok) {
+          console.log("el gid rgad");
           throw new Error("Failed to fetch patients");
         }
+        console.log("ya jamal a3tini el data");
         const data = await response.json();
-        setPatients(data);
+        console.log(data);
+        const patientList = [];
+        const devicesList = [];
+        data.map((_, index) => {
+          patientList.push(_.user.user);
+          console.log(_.user.device);
+          if (_.user.device !== null) {
+            devicesList.push(_.user.device);
+          }
+        });
+        await setPatients(patientList);
+        console.log(patients);
+        console.log("devicesList: ", devicesList);
+        setDevices(devicesList);
+        console.log("devices: ", devices);
       } catch (err) {
         setError(err.message);
       }
     };
 
-    fetchDevices();
+    // fetchDevices();
     fetchPatients();
   }, []);
 

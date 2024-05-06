@@ -1,6 +1,6 @@
 import Button from "@/components/button";
 import { GlobalContext } from "@/context";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import ChartLine from "@/components/chartLine";
 import ProfileCard from "@/components/profileCard";
 import ProfileNotes from "@/components/profileNotes";
@@ -8,6 +8,35 @@ import ProfileNotes from "@/components/profileNotes";
 export default function () {
   const { selectedPatient } = useContext(GlobalContext);
   const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
+  useEffect(() => {
+    const fetchNotes = async () => {
+      const patientId = selectedPatient.id; // Assuming 'selectedPatient' has an 'id' property
+      console.log(patientId)
+      try {
+        const response = await fetch(
+          `http://localhost:5000/user/patients/:${patientId}/notes`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        ); // Adjust API endpoint
+        if (!response.ok) {
+          console.log("el gid rgad");
+          throw new Error("Failed to fetch notes");
+        }
+        console.log("ya jamal a3tini el data");
+        const data = await response.json();
+        console.log(data);
+        setNotes(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    console.log("el data ya si mouhammed");
+    fetchNotes();
+  }, []);
   const handleClose = () => {
     setAsideOpenStatus(
       Object.keys(asideOpenStatus).reduce((acc, key) => {

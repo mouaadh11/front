@@ -71,9 +71,7 @@ export default function Patients() {
 
         <RightAside hiddenElement={asideOpenStatus["noteForm"]}>
           <PatientAsideNote
-            selectedPatient={selectedPatient}
             formattedDate={formattedDate}
-            handleNoteSubmit={handleNoteSubmit}
           />
         </RightAside>
 

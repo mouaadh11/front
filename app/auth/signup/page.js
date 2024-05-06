@@ -9,11 +9,14 @@ import {
 } from "react-icons/md";
 import { FaUserMd } from "react-icons/fa";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 const SignUp = () => {
   const [show, setShow] = useState({
     password: false,
     confirm_password: false,
   });
+  const router = useRouter(); // Get router instance
+
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent default form submission
     const formData = new FormData(event.target); // Get form data
@@ -27,7 +30,7 @@ const SignUp = () => {
       password: formData.get("password"),
       // confirmPassword: formData.get("confirm_password"),
     };
-    console.log(data);
+    // console.log(data);
     try {
       const response = await fetch("http://localhost:5000/auth/signup", {
         method: "POST",
@@ -36,12 +39,20 @@ const SignUp = () => {
       });
 
       if (!response.ok) {
-        console.log(response.text);
         throw new Error("Failed to sign up");
       }
 
       // Handle successful signup (e.g., display success message, redirect)
       console.log("Signup successful!");
+      const responseData = await response.json();
+      localStorage.setItem("token", responseData.access_token);
+      const getUsre = await fetch("http://localhost:5000/user/me", {
+        method: "GET",
+        headers: { Authorization: "Bearer " + responseData.access_token },
+      });
+      const userData = await getUsre.json();
+      localStorage.setItem("user", JSON.stringify(userData));
+      router.push("/dashboard");
     } catch (error) {
       console.error("Signup error:", error);
       // Handle signup error (e.g., display error message)

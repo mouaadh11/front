@@ -22,7 +22,17 @@ const Login = () => {
     });
 
     if (response.ok) {
+      const responseData = await response.json();
       console.log("Login successful");
+      localStorage.setItem("token", responseData.access_token);
+      const getUsre = await fetch("http://localhost:5000/user/me", {
+        method: "GET",
+        headers: { Authorization: "Bearer " + responseData.access_token },
+      });
+      const userData = await getUsre.json();
+      console.log(userData);
+      localStorage.setItem("user", JSON.stringify(userData));
+      console.log(JSON.parse(localStorage.getItem("user")));
       router.push("/dashboard"); // Redirect using Next.js router
     } else {
       console.log(response.status);

@@ -3,19 +3,20 @@ import { GlobalContext } from "@/context";
 import { useContext, useState } from "react";
 
 export default function RegisterNewPatient() {
+  const   userInfo =  JSON.parse( localStorage.getItem("user"));
+  console.log(userInfo);
   const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
   const [formData, setFormData] = useState({
+    Userid: userInfo.id,
     firstname: "",
     lastname: "",
     DateOfBirth: "",
     phoneNum: "",
-    email: "", 
+    email: "",
     height: 0,
     weight: 0,
     BloodType: "",
-
   });
-
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
@@ -23,18 +24,25 @@ export default function RegisterNewPatient() {
 
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent default form submission behavior
-    setFormData({...formData, height:  parseInt(formData.height), weight: parseInt(formData.weight), password: formData.DateOfBirth })
-    const requestBody = JSON.stringify(formData); // Prepare request body
-    console.log(requestBody)
+    const data = {
+      ...formData,
+      DateOfBirth: new Date(formData.DateOfBirth),
+      height: parseInt(formData.height),
+      weight: parseInt(formData.weight),
+      password: formData.DateOfBirth,
+    };
+    console.log("formated Data")
+    console.log(data);
+    const requestBody = JSON.stringify(data); // Prepare request body
     try {
-      const response = await fetch(
-        "http://localhost:5000/auth/signup",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: requestBody,
-        }
-      );
+      const response = await fetch("http://localhost:5000/user/patients", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+        body: requestBody,
+      });
 
       if (!response.ok) {
         // Handle errors (e.g., display an error message to the user)
