@@ -8,6 +8,7 @@ import PatientList from "@/components/list/patients";
 import PatientModifyProfile from "@/components/patientModifyProfile";
 import AsdieAppointment from "@/components/asideAppointment";
 
+
 export default function Patients() {
   const { patients } = useContext(GlobalContext); // State to store fetched patients
   const { selectedPatient } = useContext(GlobalContext);
