@@ -2,13 +2,15 @@ import Button from "../button";
 import { GlobalContext } from "@/context";
 import { useContext, useState, useEffect } from "react";
 export default function ({ formattedDate }) {
-
   const { selectedPatient } = useContext(GlobalContext);
   const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
 
   const [formData, setFormData] = useState(selectedPatient);
+  // Destructure selectedPatient to exclude the 'id' (assuming it's patientId)
   useEffect(() => {
-    setFormData(selectedPatient); // Update form data after initial render
+    const {id,hasDevice, ...data } = selectedPatient;
+
+    setFormData(data)
   }, [selectedPatient]);
 
   const handleChange = (e) => {
@@ -19,10 +21,10 @@ export default function ({ formattedDate }) {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(formData);
-  };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   onSubmit(formData);
+  // };
   const handleClose = () => {
     setAsideOpenStatus(
       Object.keys(asideOpenStatus).reduce((acc, key) => {
@@ -38,6 +40,33 @@ export default function ({ formattedDate }) {
         return acc;
       }, {})
     );
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const patientId = selectedPatient.id; // Assuming patientId is available
+      console.log("updated id", patientId);
+      const response = await fetch(
+        `http://localhost:5000/user/patients/${patientId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Error updating patient data: ${response.statusText}`);
+      }
+
+      const updatedPatientData = await response.json(); // Parse the response as JSON
+      console.log("Patient data updated successfully:", updatedPatientData);
+      // Handle successful update (e.g., display a success message, close the form)
+    } catch (error) {
+      console.error("Error updating patient data:", error);
+      // Handle errors appropriately (e.g., display an error message to the user)
+    }
   };
   return (
     <>
@@ -85,7 +114,7 @@ export default function ({ formattedDate }) {
             <input
               type="date"
               name="age"
-              value={formData.age}
+              value={formData.DateofBirth}
               onChange={handleChange}
               className=" mt-2 resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             />
