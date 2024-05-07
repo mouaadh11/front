@@ -1,14 +1,22 @@
 import { GlobalContext } from "@/context";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Button from "../button";
 export default function ({ patients }) {
   const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
   const { selectedPatient, setSelectedPatient } = useContext(GlobalContext);
+  const { selectedDevice, setSelectedDevice } = useContext(GlobalContext);
+  const { devices } = useContext(GlobalContext);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const handleOpen = (panel, patient) => {
-    console.log(selectedPatient);
-    setSelectedPatient({ ...patient, hasDevice: false });
+  const handleOpen = async (panel, patient) => {
+    setSelectedPatient(patient);
+    console.log("from list p", patient.id);
+    console.log("devices", devices);
+    const devicePatient = devices.find(
+      (device) => device.ownerID === patient.id
+    );
+    setSelectedDevice(devicePatient);
+    console.log("device if any", devicePatient);
     setAsideOpenStatus(
       Object.keys(asideOpenStatus).reduce((acc, key) => {
         acc[key] = key === panel;
@@ -21,6 +29,7 @@ export default function ({ patients }) {
     setSearchTerm(event.target.value);
     onChange && onChange(event.target.value);
   };
+
   return (
     <>
       <div className="relative w-full h-[87vh] overflow-y-scroll ">

@@ -3,9 +3,9 @@ import { GlobalContext } from "@/context";
 import { useContext, useState } from "react";
 
 export default function RegisterNewPatient() {
-  const   userInfo =  JSON.parse( localStorage.getItem("user"));
+  const userInfo = JSON.parse(localStorage.getItem("user"));
   console.log(userInfo);
-  const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
+  const { asideOpenStatus, setAsideOpenStatus, fetchPatients } = useContext(GlobalContext);
   const [formData, setFormData] = useState({
     Userid: userInfo.id,
     firstname: "",
@@ -31,7 +31,7 @@ export default function RegisterNewPatient() {
       weight: parseInt(formData.weight),
       password: formData.DateOfBirth,
     };
-    console.log("formated Data")
+    console.log("formated Data");
     console.log(data);
     const requestBody = JSON.stringify(data); // Prepare request body
     try {
@@ -63,6 +63,7 @@ export default function RegisterNewPatient() {
         "An unexpected error occurred during registration. Please try again later."
       ); // Or use a more user-friendly error message
     }
+    fetchPatients();
   };
   const handleClose = () => {
     setAsideOpenStatus(

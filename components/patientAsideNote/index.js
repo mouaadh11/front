@@ -2,7 +2,8 @@ import Button from "../button";
 import { GlobalContext } from "@/context";
 import { useContext } from "react";
 export default function ({ formattedDate }) {
-  const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
+  const { asideOpenStatus, setAsideOpenStatus, fetchPatients, fetchNotes } =
+    useContext(GlobalContext);
   const { selectedPatient } = useContext(GlobalContext);
   const handleOpen = (panel) => {
     setAsideOpenStatus(
@@ -49,12 +50,14 @@ export default function ({ formattedDate }) {
 
       // Handle success (e.g., display success message, clear form, close panel)
       console.log("Note created successfully!");
+      alert("Note successfully created!");
       // You might want to clear the form fields here
       // handleClose(); // Call this to close the panel if desired
     } catch (error) {
       console.error("Error creating note:", error);
       // Handle errors (e.g., display error message to user)
     }
+    fetchNotes();
   };
   const handleClose = () => {
     setAsideOpenStatus(

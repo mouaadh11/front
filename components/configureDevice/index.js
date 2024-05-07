@@ -2,64 +2,98 @@ import { useContext, useState, useEffect } from "react";
 import Button from "../button";
 import { GlobalContext } from "@/context";
 export default function ConfigureDevice() {
-  const [devices, setDevices] = useState([]);
-  const [patients, setPatients] = useState([]);
-  const [selectedDeviceId, setSelectedDeviceId] = useState("");
-  const [selectedPatientId, setSelectedPatientId] = useState("");
+  const { patients, fetchPatients } = useContext(GlobalContext);
   const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
   const { selectedDevice, selectedPatient } = useContext(GlobalContext);
-
-  const handleDeviceChange = (event) => {
-    setSelectedDeviceId(event.target.value);
+  const [selectedPatientId, setSelectedPatientId] = useState(
+    selectedPatient.id
+  );
+  const [selectedSid, setSelectedSid] = useState("");
+  const [selectedSecretKey, setSelectedSecretKey] = useState("");
+  useEffect(() => {
+    setSelectedPatientId(selectedPatient.id);
+  }, [selectedPatient]);
+  const handleSidChange = (event) => {
+    setSelectedSid(event.target.value);
   };
 
+  const handleSecretKeyChange = (event) => {
+    setSelectedSecretKey(event.target.value);
+  };
   const handlePatientChange = (event) => {
     setSelectedPatientId(event.target.value);
   };
 
-  const handleConfigure = (event) => {
-    event.preventDefault();
-    console.log("Configure Device:", selectedDeviceId, selectedPatientId);
-    // Implement logic to configure the device with selected patient
-  };
+  const handleActivate = async (e) => {
+    e.preventDefault();
 
-  useEffect(() => {
-    const fetchDevices = async () => {
-      try {
-        const response = await fetch("/api/devices"); // Adjust API endpoint
-        if (!response.ok) {
-          throw new Error("Failed to fetch devices");
-        }
-        const data = await response.json();
-        setDevices(data);
-        console.log(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false); // Set loading state to false after fetch (success or error)
-      }
+    const doctor = JSON.parse(localStorage.getItem("user"));
+    const data = {
+      DeviceSID: parseInt(selectedSid),
+      ActivationCode: parseInt(selectedSecretKey),
+      ActivatorId: doctor.id,
+      Userid: parseInt(selectedPatientId),
     };
+    console.log("data", selectedPatientId);
+    try {
+      const response = await fetch("http://localhost:5000/user/devices", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+        body: JSON.stringify(data),
+      });
 
-    fetchDevices();
-  }, []);
-  useEffect(() => {
-    const fetchPatients = async () => {
-      try {
-        const response = await fetch("/api/patients/"); // Adjust API endpoint
-        if (!response.ok) {
-          throw new Error("Failed to fetch patients");
-        }
-        const data = await response.json();
-        setPatients(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false); // Set loading state to false after fetch (success or error)
+      if (!response.ok) {
+        throw new Error(`Error configuring device: ${response.statusText}`);
       }
-    };
 
+      const responseData = await response.json(); // Parse the response as JSON
+      console.log("Device configured successfully:", responseData);
+      alert("Device configured successfully");
+      // Handle successful configuration (e.g., display a success message, clear form)
+    } catch (error) {
+      console.error("Error configuring device:", error);
+      // Handle errors appropriately (e.g., display an error message to the user)
+    }
     fetchPatients();
-  }, []);
+  };
+  const handleDeactivate = async (e) => {
+    e.preventDefault();
+
+    const doctor = JSON.parse(localStorage.getItem("user"));
+    const data = {
+      UserId: doctor.id,
+    };
+    console.log("data", selectedPatientId);
+    try {
+      const response = await fetch(
+        `http://localhost:5000/user/devices/${selectedDevice.Sid}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Error configuring device: ${response.statusText}`);
+      }
+
+      const responseData = await response.json(); // Parse the response as JSON
+      console.log("Device configured successfully:", responseData);
+      alert("Device configured successfully");
+      // Handle successful configuration (e.g., display a success message, clear form)
+    } catch (error) {
+      console.error("Error configuring device:", error);
+      // Handle errors appropriately (e.g., display an error message to the user)
+    }
+    fetchPatients();
+  };
   const handleClose = () => {
     setAsideOpenStatus(
       Object.keys(asideOpenStatus).reduce((acc, key) => {
@@ -80,7 +114,7 @@ export default function ConfigureDevice() {
     <>
       <div className="flex flex-col px-6 py-4">
         <div className="flex flex-row justify-end mb-3 gap-4">
-          { selectedPatient.patientId ? (
+          {selectedPatient.patientId ? (
             <Button
               handler={() => {
                 handleOpen("sidebar");
@@ -97,56 +131,66 @@ export default function ConfigureDevice() {
           )}
         </div>
         <div>
-          <form onSubmit={handleConfigure}>
+          <form
+            onSubmit={
+              selectedDevice && selectedDevice.Sid
+                ? handleDeactivate
+                : handleActivate
+            }
+          >
             <div className="flex flex-col gap-4">
               <h2 className="text-3xl font-bold">Configure Device</h2>
-
+              {console.log("device owner", selectedDevice)}
               <div className="flex flex-col gap-2 mb-4">
-                <label htmlFor="device">Select Device:</label>
-                <select
-                  name="device"
-                  id="device"
-                  value={selectedDeviceId}
-                  onChange={handleDeviceChange}
+                <label htmlFor="sid">SID:</label>
+                <input
+                  type="text"
+                  name="sid"
+                  id="sid"
+                  defaultValue={
+                    selectedDevice && selectedDevice.Sid && selectedDevice.Sid
+                  } // Assuming you have a selectedSid state variable
+                  onChange={handleSidChange} // Assuming you have a handleSidChange function
                   className="mt-2 resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  {selectedDevice.deviceId ? (
-                    <option value={selectedDevice.deviceId}>
-                      {selectedDevice.deviceId}
-                    </option>
-                  ) : (
-                    <option value="">Select device</option>
-                  )}
-                  {devices.map((device) => (
-                    <option key={device.deviceId} value={device.deviceId}>
-                      {device.deviceId}
-                    </option>
-                  ))}
-                </select>
+                />
               </div>
 
+              <div className="flex flex-col gap-2 mb-4 text-black">
+                <label htmlFor="secretKey">Secret Key:</label>
+                <input
+                  type="text"
+                  name="secretKey"
+                  id="secretKey"
+                  disabled={selectedDevice && selectedDevice.Sid}
+                  placeholder={"xxx"} // Assuming you have a selectedSecretKey state variable
+                  onChange={handleSecretKeyChange} // Assuming you have a handleSecretKeyChange function
+                  className="mt-2 resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                />
+              </div>
               <div className="flex flex-col gap-2 mb-4 text-black">
                 <label htmlFor="patient">Select Patient:</label>
                 <select
                   name="patient"
                   id="patient"
-                  value={selectedPatientId}
+                  defaultValue={selectedPatient.id && selectedPatient.id}
                   onChange={handlePatientChange}
                   className="mt-2 resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
-                  {selectedPatient.patientId ? (
-                    <option value={selectedPatient.patientId}>
+                  {selectedPatient.id ? (
+                    <option value={selectedPatient.id}>
                       {selectedPatient.firstName} {selectedPatient.lastName}
                     </option>
                   ) : (
                     <option value="">Select Patient</option>
                   )}
 
-                  {patients.map((patient) => (
-                    <option key={patient.patientId} value={patient.patientId}>
-                      {patient.firstName} {patient.lastName}
-                    </option>
-                  ))}
+                  {patients &&
+                    patients.map((patient) => (
+                      !patient.hasDevice &&
+                      <option key={patient.patientId} value={patient.id}>
+                        {patient.firstName} {patient.lastName}
+                      </option>
+                    ))}
                 </select>
               </div>
 
@@ -156,7 +200,14 @@ export default function ConfigureDevice() {
                   handler={handleClose}
                   styling={"bg-red-400"}
                 />
-                <Button buttontype={"submit"} title={"Configure Device"} />
+                <Button
+                  buttontype={"submit"}
+                  title={
+                    selectedDevice && selectedDevice.Sid
+                      ? "Deactivate"
+                      : "Activate"
+                  }
+                />
               </div>
             </div>
           </form>

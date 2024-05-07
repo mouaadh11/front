@@ -2,15 +2,15 @@ import Button from "../button";
 import { GlobalContext } from "@/context";
 import { useContext, useState, useEffect } from "react";
 export default function ({ formattedDate }) {
-  const { selectedPatient } = useContext(GlobalContext);
+  const { selectedPatient, fetchPatients } = useContext(GlobalContext);
   const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
 
   const [formData, setFormData] = useState(selectedPatient);
   // Destructure selectedPatient to exclude the 'id' (assuming it's patientId)
   useEffect(() => {
-    const {id,hasDevice, ...data } = selectedPatient;
+    const { id, hasDevice, ...data } = selectedPatient;
 
-    setFormData(data)
+    setFormData(data);
   }, [selectedPatient]);
 
   const handleChange = (e) => {
@@ -63,10 +63,12 @@ export default function ({ formattedDate }) {
       const updatedPatientData = await response.json(); // Parse the response as JSON
       console.log("Patient data updated successfully:", updatedPatientData);
       // Handle successful update (e.g., display a success message, close the form)
+      alert("Patient data updated successfully");
     } catch (error) {
       console.error("Error updating patient data:", error);
       // Handle errors appropriately (e.g., display an error message to the user)
     }
+    fetchPatients();
   };
   return (
     <>

@@ -44,7 +44,7 @@ export default function Patients() {
     event.preventDefault();
     console.log("Submitted note:", event.target.note.value);
   };
-
+  
   return (
     <>
       <div className=" w-full h-full  max-w-full flex flex-row justify-normal overflow-hidden">
