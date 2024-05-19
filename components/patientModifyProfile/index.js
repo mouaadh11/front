@@ -2,14 +2,15 @@ import Button from "../button";
 import { GlobalContext } from "@/context";
 import { useContext, useState, useEffect } from "react";
 export default function ({ formattedDate }) {
-  const { selectedPatient, fetchPatients } = useContext(GlobalContext);
+  const { selectedPatient, fetchPatients, setSelectedPatient } =
+    useContext(GlobalContext);
   const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
 
   const [formData, setFormData] = useState(selectedPatient);
   // Destructure selectedPatient to exclude the 'id' (assuming it's patientId)
   useEffect(() => {
-    const { id, hasDevice, ...data } = selectedPatient;
-
+    const { id, hasDevice, deviceId, age, ...data } = selectedPatient;
+    console.log("data!", data);
     setFormData(data);
   }, [selectedPatient]);
 
@@ -41,18 +42,41 @@ export default function ({ formattedDate }) {
       }, {})
     );
   };
-
+  function calculateAge(dateOfBirth) {
+    // Parse the date string into a Date object
+    const dob = new Date(dateOfBirth);
+    console.log("dob", dob);
+    // Get the current date
+    const today = new Date();
+    console.log(today);
+    // Calculate the difference in milliseconds
+    const diffInMs = today.getTime() - dob.getTime();
+    console.log("diffInMs", diffInMs);
+    // Convert milliseconds to years (rounded down)
+    const age = Math.floor(diffInMs / (1000 * 60 * 60 * 24 * 365));
+    console.log("age", age);
+    return age;
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("befor submit changes", formData);
     try {
       const patientId = selectedPatient.id; // Assuming patientId is available
-      console.log("updated id", patientId);
+      console.log(
+        "updated birthday",
+        new Date(formData.birthdate).toISOString()
+      );
       const response = await fetch(
         `http://localhost:5000/user/patients/${patientId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({
+            ...formData,
+            height: parseInt(formData.height),
+            weight: parseInt(formData.weight),
+            birthdate: new Date(formData.birthdate).toISOString(),
+          }),
         }
       );
 
@@ -62,6 +86,11 @@ export default function ({ formattedDate }) {
 
       const updatedPatientData = await response.json(); // Parse the response as JSON
       console.log("Patient data updated successfully:", updatedPatientData);
+      setSelectedPatient({
+        ...selectedPatient,
+        ...formData,
+        age: calculateAge(new Date(formData.birthdate).toISOString()),
+      });
       // Handle successful update (e.g., display a success message, close the form)
       alert("Patient data updated successfully");
     } catch (error) {
@@ -109,54 +138,83 @@ export default function ({ formattedDate }) {
               className="w-full mt-2 resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 w-2/4">
             <label className="block text-sm font-medium text-gray-700">
               Birth Date
             </label>
             <input
               type="date"
-              name="age"
-              value={formData.DateofBirth}
+              name="birthdate"
+              value={formData.birthdate}
               onChange={handleChange}
-              className=" mt-2 resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className=" mt-2 resize-none w-full rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             />
           </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Height (cm)
-            </label>
-            <input
-              type="number"
-              name="height"
-              value={formData.height}
-              onChange={handleChange}
-              className=" mt-2 resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            />
+          <div className="flex flex-row w-full gap-4">
+            <div className="mb-4 w-3/4">
+              <label className="block text-sm font-medium text-gray-700">
+                Height (cm)
+              </label>
+              <input
+                type="number"
+                name="height"
+                value={formData.height}
+                onChange={handleChange}
+                className=" mt-2 resize-none w-full rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="mb-4 w-3/4">
+              <label className="block text-sm font-medium text-gray-700">
+                Weight (kg)
+              </label>
+              <input
+                type="number"
+                name="weight"
+                value={formData.weight}
+                onChange={handleChange}
+                className=" mt-2 resize-none w-full rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              />
+            </div>
           </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Weight (kg)
-            </label>
-            <input
-              type="number"
-              name="weight"
-              value={formData.weight}
-              onChange={handleChange}
-              className=" mt-2 resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            />
+          <div className="flex flex-row w-full gap-4">
+            <div className="mb-4 w-3/4">
+              <label className="block text-sm font-medium text-gray-700">
+                Max HeartRate
+              </label>
+              <input
+                type="number"
+                name="height"
+                value={110}
+                onChange={handleChange}
+                className=" mt-2 resize-none w-full rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="mb-4 w-3/4">
+              <label className="block text-sm font-medium text-gray-700">
+                Min HeartRate
+              </label>
+              <input
+                type="number"
+                name="weight"
+                value={50}
+                onChange={handleChange}
+                className=" mt-2 resize-none w-full rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              />
+            </div>
           </div>
-          <div className="w-1/4 flex flex-col  mb-4">
+
+          <div className="flex flex-row-reverse w-full justify-between mb-4">
             <Button
               buttontype={"submit"}
               title={"Save Changes"}
               styling={
-                "w-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                " hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               }
             />
 
             <Button
               handler={handleClose}
-              styling={"w-full px-5 mt-3 bg-orange-400 hover:bg-red-600"}
+              styling={"px-5 mt-3 bg-orange-400 hover:bg-red-600"}
               title={"Cancel"}
             />
           </div>

@@ -12,7 +12,6 @@ export default function RegisterNewPatient() {
     lastname: "",
     DateOfBirth: "",
     phoneNum: "",
-    email: "",
     height: 0,
     weight: 0,
     BloodType: "",
@@ -86,12 +85,12 @@ export default function RegisterNewPatient() {
         <div className="px-4 flex items-center justify-center">
           <form
             onSubmit={handleSubmit}
-            className="p-4 flex flex-col space-y-4 w-4/5 mb-4"
+            className="p-4 flex flex-col space-y-4 w-4/5"
           >
             <div className="flex flex-col gap-4">
-              <h2 className="text-3xl font-bold">Register New Patient</h2>
+              <h2 className="text-3xl font-bold mb-2">Register New Patient</h2>
               <div className="flex flex-row justify-between gap-2">
-                <div className="flex flex-col gap-1 mb-4 w-full">
+                <div className="flex flex-col gap-1 w-full">
                   <label htmlFor="firstName">First Name:</label>
                   <input
                     type="text"
@@ -103,7 +102,7 @@ export default function RegisterNewPatient() {
                     className="mt-2 resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                   />
                 </div>
-                <div className="flex flex-col gap-1 mb-4 w-full">
+                <div className="flex flex-col gap-1 w-full">
                   <label htmlFor="lastName">Last Name:</label>
                   <input
                     type="text"
@@ -117,7 +116,7 @@ export default function RegisterNewPatient() {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-1 mb-4">
+              <div className="flex flex-col gap-1 ">
                 <label htmlFor="birthDate">Birth Date:</label>
                 <input
                   type="date"
@@ -128,7 +127,7 @@ export default function RegisterNewPatient() {
                   className="mt-2 resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 />
               </div>
-              <div className="flex flex-col gap-1 mb-4">
+              <div className="flex flex-col gap-1 ">
                 <label htmlFor="phoneNumber">Phone Number (Required):</label>
                 <input
                   type="tel"
@@ -140,7 +139,7 @@ export default function RegisterNewPatient() {
                   className="mt-2 resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 />
               </div>
-              <div className="flex flex-col gap-1 mb-4">
+              <div className="flex flex-col gap-1">
                 <label htmlFor="email">Email (Optional):</label>
                 <input
                   type="email"
@@ -152,7 +151,7 @@ export default function RegisterNewPatient() {
                 />
               </div>
               <div className="flex flex-row justify-between gap-4 ">
-                <div className="flex flex-col gap-1 mb-4 w-full">
+                <div className="flex flex-col gap-1 w-full">
                   <label htmlFor="height">Height (cm):</label>
                   <input
                     type="number"
@@ -163,7 +162,7 @@ export default function RegisterNewPatient() {
                     className="mt-2 resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                   />
                 </div>
-                <div className="flex flex-col gap-1 mb-4 w-full">
+                <div className="flex flex-col gap-1 w-full">
                   <label htmlFor="weight">Weight (kg):</label>
                   <input
                     type="number"
@@ -175,7 +174,31 @@ export default function RegisterNewPatient() {
                   />
                 </div>
               </div>
-              <div className="flex flex-col gap-1 mb-4">
+              <div className="flex flex-row justify-between gap-4 ">
+                <div className="flex flex-col gap-1 w-full">
+                  <label htmlFor="height">Max HeartRate :</label>
+                  <input
+                    type="number"
+                    name="height"
+                    id="height"
+                    value={formData.height}
+                    onChange={handleChange}
+                    className="mt-2 resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div className="flex flex-col gap-1 w-full">
+                  <label htmlFor="weight">Min HeartRate :</label>
+                  <input
+                    type="number"
+                    name="weight"
+                    id="weight"
+                    value={formData.weight}
+                    onChange={handleChange}
+                    className="mt-2 resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col gap-1 ">
                 <label htmlFor="bloodType">Blood Type:</label>
                 <select
                   name="BloodType"

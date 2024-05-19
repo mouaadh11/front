@@ -80,7 +80,7 @@ export default function ({ patients }) {
                       <span className="text-gray-600 font-semibold mr-6 flex flex-initial">
                         ID:{" "}
                         <span className="text-gray-600 font-normal ml-1">
-                          {patient.patientId}
+                          {patient.id}
                         </span>
                       </span>
                       <p className="text-gray-600 font-semibold mr-6 flex flex-initial ">
@@ -92,7 +92,9 @@ export default function ({ patients }) {
                       <span className="text-gray-600 font-semibold mr-6 flex flex-initial">
                         Last Update:{" "}
                         <span className="text-gray-600 font-normal ml-2">
-                          {patient.lastUpdateDate}
+                          {patient.updatedAt
+                            ? patient.updatedAt.substring(0, 10)
+                            : "---"}
                         </span>
                       </span>
                     </div>

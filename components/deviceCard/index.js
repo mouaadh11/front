@@ -29,9 +29,6 @@ export default function Deicecard() {
                     {selectedDevice.activationDate}
                   </li>
                 </div>
-                {/* <div className="flex flex-row bg-blue-100 gap-3 rounded-md px-4 py-1 text-gray-600">
-               
-              </div> */}
               </div>
             </div>
           </ul>

@@ -6,20 +6,17 @@ import Header from "@/components/header";
 import RightAside from "@/components/rightAside"; // Correct import for RightAside
 import RegisterNewPatient from "@/components/registerPatient";
 import ConfigureDevice from "@/components/configureDevice";
-import { useRouter } from "next/navigation";
+
 
 export default function DashboardLayout({ children }) {
   const { buttonsList } = useContext(GlobalContext);
   const { asideOpenStatus } = useContext(GlobalContext);
-  const { devices, setDevices } = useContext(GlobalContext);
-  const { patients, setPatients } = useContext(GlobalContext);
-  const { headerTitle, fetchPatients } = useContext(GlobalContext);
-  const router = useRouter();
-  const [error, setError] = useState(null);
-
+  const { headerTitle, fetchPatients, fetchAppointments, fetchNotifications } = useContext(GlobalContext);
   useEffect(() => {
     console.log("waiting for data");
     fetchPatients();
+    fetchAppointments();
+    fetchNotifications();
   }, []);
 
   return (

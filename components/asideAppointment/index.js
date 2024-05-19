@@ -5,18 +5,69 @@ export default function AsdieAppointment() {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [note, setNote] = useState("");
+  const { selectedPatient, fetchAppointments } = useContext(GlobalContext);
 
-  const handleSubmit = (event) => {
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+
+  //   // Implement logic to submit appointment data (e.g., API call)
+
+  //   // Clear form after submission
+  //   setDate("");
+  //   setTime("");
+  //   setNote("");
+  // };
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Implement logic to submit appointment data (e.g., API call)
-    console.log("Appointment details:", { date, time, note });
+    // Extract form data
 
-    // Clear form after submission (optional)
-    setDate("");
-    setTime("");
-    setNote("");
+    const date = new Date(
+      `${event.target.date.value},${event.target.time.value}`
+    ).toISOString();
+    console.log(date);
+    // const note = event.target.note.value;
+
+    // Prepare appointment data object
+    // Combine date and time into a single value
+    const docotor = JSON.parse(localStorage.getItem("user"));
+    console.log("doctor", docotor);
+    // Convert combined date and time to ISO format
+    const appointmentData = {
+      AppointmentDate: date,
+      DoctorId: docotor.id,
+      PatientId: selectedPatient.id,
+      // note,
+    };
+    try {
+      // Replace with your actual API call logic
+      const response = await fetch(`http://localhost:5000/user/appointments`, {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(appointmentData),
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `Appointment creation failed with status: ${response.status}`
+        );
+      }
+
+      alert("Appointment created successfully!");
+      fetchAppointments();
+      // Clear form after successful submission
+      setDate("");
+      setTime("");
+      setNote("");
+    } catch (error) {
+      console.error("Error creating appointment:", error);
+      // Handle errors appropriately (e.g., display an error message to the user)
+    }
   };
+
   const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
   const handleOpen = (panel) => {
     setAsideOpenStatus(
@@ -47,37 +98,40 @@ export default function AsdieAppointment() {
         ></Button>
       </div>
       <div className="m-6">
-        <h2 className="text-3xl font-semibold mb-3">New Medical Appointment</h2>
-        <form onSubmit={handleSubmit} className="flex flex-col w-full">
-          <div className="mb-4">
-            <label htmlFor="date" className="block text-sm font-medium mb-2">
-              Date:
-            </label>
-            <input
-              type="date"
-              id="date"
-              name="date"
-              className="mt-2 w-full resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              required
-            />
+        <h2 className="text-3xl font-semibold mb-5">New Medical Appointment</h2>
+        <form onSubmit={handleSubmit} className="flex flex-col w-full h-[100%] justify-between">
+          <div>
+            <div className="mb-4">
+              <label htmlFor="date" className="block text-sm font-medium mb-1">
+                Date:
+              </label>
+              <input
+                type="date"
+                id="date"
+                name="date"
+                className="mt-2 w-full resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="time" className="block text-sm font-medium mb-1">
+                Time:
+              </label>
+              <input
+                type="time"
+                id="time"
+                name="time"
+                className="mt-2 w-full resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                value={time}
+                onChange={(e) => setTime(e.target.value)}
+                required
+              />
+            </div>
           </div>
-          <div className="mb-4">
-            <label htmlFor="time" className="block text-sm font-medium mb-2">
-              Time:
-            </label>
-            <input
-              type="time"
-              id="time"
-              name="time"
-              className="mt-2 w-full resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-              required
-            />
-          </div>
-          <div className="mb-4">
+
+          {/* <div className="mb-4">
             <label htmlFor="note" className="block text-sm font-medium mb-2">
               Note:
             </label>
@@ -89,20 +143,21 @@ export default function AsdieAppointment() {
               value={note}
               onChange={(e) => setNote(e.target.value)}
             />
+          </div> */}
+          <div>
+            <Button
+              buttontype={"submit"}
+              styling={
+                "w-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              }
+              title={"Add Appointment"}
+            ></Button>
+            <Button
+              handler={handleClose}
+              styling={"w-full px-5 mt-3 bg-orange-400 hover:bg-red-600"}
+              title={"Cancel"}
+            />
           </div>
-
-          <Button
-            buttontype={"submit"}
-            styling={
-              "w-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            }
-            title={"Add Appointment"}
-          ></Button>
-          <Button
-            handler={handleClose}
-            styling={"w-full px-5 mt-3 bg-orange-400 hover:bg-red-600"}
-            title={"Cancel"}
-          />
         </form>
       </div>
     </div>

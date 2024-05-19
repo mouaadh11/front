@@ -147,6 +147,7 @@ export default function ConfigureDevice() {
                   type="text"
                   name="sid"
                   id="sid"
+                  placeholder="e.g: 12345678"
                   defaultValue={
                     selectedDevice && selectedDevice.Sid && selectedDevice.Sid
                   } // Assuming you have a selectedSid state variable

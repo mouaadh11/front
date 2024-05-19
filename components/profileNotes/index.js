@@ -12,8 +12,6 @@ export default function ProfileNotes() {
   }, [selectedPatient]);
 
   const handleDeleteNote = async (index) => {
-    // const updatedNotes = [...notes]; // Create copy to avoid mutation
-    // updatedNotes.splice(index, 1); // Remove the note at the specified index
     const response = await fetch(
       `http://localhost:5000/user/notes/${notes[index].Nid}`,
       {
@@ -40,7 +38,8 @@ export default function ProfileNotes() {
               <li key={index} className="bg-blue-100 mb-4 px-3 py-4 rounded-md">
                 <div className="flex flex-row justify-between">
                   <span>{note.NoteSub || "Note title"}</span>
-                  <span className="text-gray-700 mb-1">{note.date}</span>
+                  {console.log("date not:", note)}
+                  <span className="text-gray-700 mb-1">{note.createAt.substring(0,10)}</span>
                 </div>
                 <div className="flex flex-row justify-between items-center w-full">
                   <span className="text-gray-700 mb-1">{note.NoteMain}</span>

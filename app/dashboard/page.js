@@ -29,8 +29,8 @@ export default function Dashboard() {
   );
   const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
   const { setHeaderTitle } = useContext(GlobalContext);
-  const { setSelectedDevice, setSelectedPatient } = useContext(GlobalContext);
-  
+  const { setSelectedDevice, setSelectedPatient, patients, notifications } =
+    useContext(GlobalContext);
 
   const dashboardButtons = [
     {
@@ -64,7 +64,7 @@ export default function Dashboard() {
     },
   ];
   const { setButtonsList } = useContext(GlobalContext);
-  
+
   useEffect(() => {
     setButtonsList(dashboardButtons);
     setHeaderTitle("Dashboard");
@@ -77,79 +77,7 @@ export default function Dashboard() {
     setSelectedPatient({});
     setSelectedDevice({});
   }, []);
-
-  const Appointments = [
-    // {
-    //   title: "Appointment Reminder",
-    //   content:
-    //     "Your upcoming appointment with Dr. Smith is scheduled for next Monday at 10:00 AM.",
-    //   patientName: "Alice Johnson",
-    // },
-    // {
-    //   title: "Prescription Refill Request",
-    //   content:
-    //     "Your prescription for [Medication Name] is due for a refill. Please contact our pharmacy at [Phone Number] to request a refill.",
-    //   patientName: "Alice Johnson",
-    // },
-    // {
-    //   title: "Test Result Notification",
-    //   content:
-    //     "Your recent blood test results are available. Please schedule a follow-up appointment with your healthcare provider to discuss the findings.",
-    //   patientName: "Alice Johnson",
-    // },
-    // {
-    //   title: "Appointment Reminder",
-    //   content:
-    //     "Your upcoming appointment with Dr. Smith is scheduled for next Monday at 10:00 AM.",
-    //   patientName: "Alice Johnson",
-    // },
-    // {
-    //   title: "Prescription Refill Request",
-    //   content:
-    //     "Your prescription for [Medication Name] is due for a refill. Please contact our pharmacy at [Phone Number] to request a refill.",
-    //   patientName: "Alice Johnson",
-    // },
-    // {
-    //   title: "Test Result Notification",
-    //   content:
-    //     "Your recent blood test results are available. Please schedule a follow-up appointment with your healthcare provider to discuss the findings.",
-    //   patientName: "Alice Johnson",
-    // },
-    // {
-    //   title: "Appointment Reminder",
-    //   content:
-    //     "Your upcoming appointment with Dr. Smith is scheduled for next Monday at 10:00 AM.",
-    //   patientName: "Alice Johnson",
-    // },
-    // {
-    //   title: "Prescription Refill Request",
-    //   content:
-    //     "Your prescription for [Medication Name] is due for a refill. Please contact our pharmacy at [Phone Number] to request a refill.",
-    //   patientName: "Alice Johnson",
-    // },
-    // {
-    //   title: "Test Result Notification",
-    //   content:
-    //     "Your recent blood test results are available. Please schedule a follow-up appointment with your healthcare provider to discuss the findings.",
-    //   patientName: "Alice Johnson",
-    // },
-    // {
-    //   title: "Appointment Reminder",
-    //   content:
-    //     "Your upcoming appointment with Dr. Smith is scheduled for next Monday at 10:00 AM.",
-    //   patientName: "Alice Johnson",
-    // },
-    {
-      patient: "El Gid",
-      content: "Regular diagnostic",
-      hour:"10:94 AM"
-    },
-    {
-      patient: "3abda9a 3aymoucha",
-      content: "device mouting",
-      hour: "10:94 AM",
-    },
-  ];
+  const { appointments } = useContext(GlobalContext);
   const medicalNotifications = [
     // {
     //   title: "Appointment Reminder",
@@ -212,13 +140,13 @@ export default function Dashboard() {
     //   patientName: "Alice Johnson",
     // },
     {
-      title: "El Gid",
-      content: "Rgad, kan lase9",
+      title: "xxxxx",
+      content: "xxxxxxxxxxxxxxxxxxxxxxxx",
       patientName: "8:94 AM",
     },
     {
-      title: "Copter",
-      content: "El Makhbat El Makhbet Sa7bi",
+      title: "xxxxx",
+      content: "xxxxxxxxxxxxxxxxxxxxxxxxx",
       patientName: "10:94 AM",
     },
   ];
@@ -287,19 +215,25 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="flex flex-row w-full h-fit justify-between overflow-hidden bg-blue-100">
-        <div className="w-full h-[85vh] justify-between flex flex-col my-auto">
+      <div className="flex flex-col h-fit w-full justify-between overflow-hidden bg-blue-100">
+        <div className="w-full  justify-between flex flex-col my-auto">
           <DashboardCards />
-          <div className="bg-white h-fit flex flex-col justify-center items-center m-2 p-2 rounded-md">
+          {/* <div className="bg-white h-fit flex flex-col justify-center items-center m-2 p-2 rounded-md">
             <h2 className="text-gray-600 font-bold mb-10">
               Patient and Active Device Trends
             </h2>
             <Line data={data} options={options} />
-          </div>
+          </div> */}
         </div>
         <div className="w-full flex flex-row ">
-          <DashboardNotifiction notifications={medicalNotifications} />
-          <Appointment Appointments={Appointments} />
+          {console.log("notification", notifications)}
+          {notifications !== null && patients !== null && (
+            <DashboardNotifiction notifications={notifications} />
+          )}
+          {console.log("appointment", appointments)}
+          {appointments !== null && patients !== null && (
+            <Appointment appointments={appointments} />
+          )}
         </div>
       </div>
     </>

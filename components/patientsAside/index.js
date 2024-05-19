@@ -6,8 +6,9 @@ import ProfileCard from "@/components/profileCard";
 import ProfileNotes from "@/components/profileNotes";
 
 export default function () {
-  const { selectedPatient } = useContext(GlobalContext);
+  const { selectedPatient, appointments } = useContext(GlobalContext);
   const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
+
   const handleClose = () => {
     setAsideOpenStatus(
       Object.keys(asideOpenStatus).reduce((acc, key) => {
@@ -16,6 +17,7 @@ export default function () {
       }, {})
     );
   };
+
   const handleOpen = (panel) => {
     setAsideOpenStatus(
       Object.keys(asideOpenStatus).reduce((acc, key) => {
@@ -98,9 +100,13 @@ export default function () {
         </div>
         <div className="flex flex-col justify-between">
           <div>
-            <ProfileCard />
+            { <ProfileCard />}
+
             <div className="overflow-hidden w-full">
-              <ChartLine data={data} />
+              {
+                (selectedPatient.hasDevice ) ? <ChartLine data={data} /> : <ChartLine data={[]} />
+              }
+               
             </div>
             {selectedPatient ? (
               <ProfileNotes />
