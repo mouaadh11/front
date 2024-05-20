@@ -33,7 +33,11 @@ const Login = () => {
       console.log(userData);
       localStorage.setItem("user", JSON.stringify(userData));
       console.log(JSON.parse(localStorage.getItem("user")));
-      router.push("/dashboard"); // Redirect using Next.js router
+      if (userData.Role === "Admin") {
+        router.push("/admin/patients")
+      } else {
+        router.push("/dashboard"); // Redirect using Next.js router
+      }
     } else {
       console.log(response.status);
       console.error("Invalid login credentials"); // Replace with appropriate error handling

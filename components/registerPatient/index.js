@@ -14,6 +14,8 @@ export default function RegisterNewPatient() {
     phoneNum: "",
     height: 0,
     weight: 0,
+    MinRate: 0,
+    MaxRate: 0,
     BloodType: "",
   });
   const handleChange = (event) => {
@@ -28,6 +30,8 @@ export default function RegisterNewPatient() {
       DateOfBirth: new Date(formData.DateOfBirth),
       height: parseInt(formData.height),
       weight: parseInt(formData.weight),
+      MaxRate: parseInt(formData.MaxRate),
+      MinRate: parseInt(formData.MinRate),
       password: formData.DateOfBirth,
     };
     console.log("formated Data");
@@ -179,9 +183,9 @@ export default function RegisterNewPatient() {
                   <label htmlFor="height">Max HeartRate :</label>
                   <input
                     type="number"
-                    name="height"
-                    id="height"
-                    value={formData.height}
+                    name="MaxRate"
+                    id="MaxRate"
+                    value={formData.MaxRate}
                     onChange={handleChange}
                     className="mt-2 resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                   />
@@ -190,9 +194,9 @@ export default function RegisterNewPatient() {
                   <label htmlFor="weight">Min HeartRate :</label>
                   <input
                     type="number"
-                    name="weight"
-                    id="weight"
-                    value={formData.weight}
+                    name="MinRate"
+                    id="MinRate"
+                    value={formData.MinRate}
                     onChange={handleChange}
                     className="mt-2 resize-none rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                   />

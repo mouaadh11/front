@@ -183,8 +183,8 @@ export default function ({ formattedDate }) {
               </label>
               <input
                 type="number"
-                name="height"
-                value={110}
+                name="RateMAx"
+                value={formData.MinRate}
                 onChange={handleChange}
                 className=" mt-2 resize-none w-full rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               />
@@ -195,8 +195,8 @@ export default function ({ formattedDate }) {
               </label>
               <input
                 type="number"
-                name="weight"
-                value={50}
+                name="MinRate"
+                value={formData.MinRate}
                 onChange={handleChange}
                 className=" mt-2 resize-none w-full rounded-md p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               />

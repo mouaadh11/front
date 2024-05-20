@@ -13,7 +13,7 @@ export default function Device() {
 
   const deviceButtons = [
     {
-      buttonTitle: "Configure a New Device",
+      buttonTitle: "Configure Device",
       clickHandler: () => {
         const updatedAsideOpenStatus = Object.keys(asideOpenStatus).reduce(
           (acc, key) => {

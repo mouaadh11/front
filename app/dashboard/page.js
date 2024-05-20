@@ -34,7 +34,7 @@ export default function Dashboard() {
 
   const dashboardButtons = [
     {
-      buttonTitle: "Add New Device",
+      buttonTitle: "Configure Device",
       clickHandler: () => {
         const updatedAsideOpenStatus = Object.keys(asideOpenStatus).reduce(
           (acc, key) => {

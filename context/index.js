@@ -53,7 +53,7 @@ export default function GlobalState({ children }) {
       }); // Adjust API endpoint
       if (!response.ok) {
         if (response.status === 401) {
-          router.replace("auth/login");
+          router.push("/auth/login");
         }
         throw new Error("Failed to fetch patients");
       }

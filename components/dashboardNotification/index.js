@@ -1,9 +1,10 @@
 import { GlobalContext } from "@/context";
 import { useContext, useState } from "react";
-
+import { IoReload } from "react-icons/io5";
 export default function DashboardNotifiction({ notifications }) {
   const { patients, fetchNotifications } = useContext(GlobalContext);
   const [isUpdating, setIsUpdating] = useState(false); // Track update state
+
 
   const handleMarkAsRead = async (notificationId) => {
     setIsUpdating(true); // Set loading state to prevent multiple clicks
@@ -38,8 +39,11 @@ export default function DashboardNotifiction({ notifications }) {
   return (
     <>
       <div className="relative bg-slate-100 w-full h-fit overflow-hidden p-2">
-        <div className="sticky border-b-2 p-2">
+        <div className="flex flex-row justify-between items-center border-b-2 p-2 w-full">
           <h1 className="text-gray-600 text-3xl">Notifications</h1>
+          <button onClick={() => fetchNotifications()}>
+            <IoReload className="text-black text-xl" />
+          </button>
         </div>
         <ul className="flex flex-col overflow-y-auto h-[85vh] px-2 py-4 gap-2">
           {notifications.map((notification, index) => (
@@ -60,13 +64,13 @@ export default function DashboardNotifiction({ notifications }) {
                     {patients !== null &&
                       patients.length > 0 &&
                       " " +
-                        patients.find(
-                          (obj) => obj.id === notification.PatientAccid
-                        )?.lastName +
-                        " " +
-                        patients.find(
-                          (obj) => obj.id === notification.PatientAccid
-                        )?.firstName}
+                      patients.find(
+                        (obj) => obj.id === notification.PatientAccid
+                      )?.lastName +
+                      " " +
+                      patients.find(
+                        (obj) => obj.id === notification.PatientAccid
+                      )?.firstName}
                   </h3>
                 </div>
                 <p className="text-sm text-gray-600 text-left">

@@ -1,11 +1,13 @@
-'use client';
+'use client'
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation'
 
 const AddDeviceSideSheet = () => {
+    const router = useRouter()
     const [isOpen, setIsOpen] = useState(false);
     const [formData, setFormData] = useState({
         Sid: '',
-        Activated_code: '',
+        ActivationCode: '',
     });
     const [errors, setErrors] = useState({});
 
@@ -20,27 +22,60 @@ const AddDeviceSideSheet = () => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const user = localStorage.getItem('user');
+    if (!user) {
+        console.error('User not found in local storage');
+        return;
+    }
+
+    // Parse user object and get userId
+    const parsedUser = JSON.parse(user);
+    const userId = parsedUser.id;
+
+
+    const handleSubmit = async (e) => {
+        console.log("HERE CLICKED ON")
         e.preventDefault();
         const validationErrors = {};
-        if (!formData.Sid.trim()) {
-            validationErrors.Sid = 'Sid is required';
+        // if (!formData.Sid.trim()) {
+        //     validationErrors.Sid = 'Sid is required';
+        // }
+        // if (!formData.ActivationCode.trim()) {
+        //     validationErrors.ActivationCode = 'Activated Code is required';
+        // }
+        // if (Object.keys(validationErrors).length > 0) {
+        //     setErrors(validationErrors);
+        // } else {
+            
+        //     setErrors({});
+        //     try {
+
+        const response = await fetch('http://localhost:5000/user/device', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                Sid : parseInt(formData.Sid),
+                ActivationCode : parseInt(formData.ActivationCode),
+                Userid  : parseInt(userId)
+            }),
+        });
+        if (!response.ok) {
+            throw new Error('Network response was not ok.');
         }
-        if (!formData.Activated_code.trim()) {
-            validationErrors.Activated_code = 'Activated Code is required';
-        }
-        if (Object.keys(validationErrors).length > 0) {
-            setErrors(validationErrors);
-        } else {
-            setErrors({});
-            // Handle form submission here (e.g., send data to server)
-            console.log('Form submitted:', formData);
-            // Reset form after submission
-            setFormData({
-                Sid: '',
-                Activated_code: '',
-            });
-        }
+        console.log('Device added successfully!');
+        // Reset form after successful submission
+        setFormData({
+            Sid: '',
+            Activated_code: '',
+        });
+        toggleSideSheet(); // Close the side sheet if needed
+        router.refresh()
+            // } catch (error) {
+            //     console.error('There was a problem with your fetch operation:', error);
+            // }
+        // }
     };
 
     return (
@@ -94,15 +129,15 @@ const AddDeviceSideSheet = () => {
                         </div>
                         <div className='mb-4'>
                             <label
-                                htmlFor='Activated_code'
+                                htmlFor='ActivationCode'
                                 className='block text-sm font-medium text-gray-700'
                             >
                                 Activated Code
                             </label>
                             <input
                                 type='text'
-                                id='Activated_code'
-                                name='Activated_code'
+                                id='ActivationCode'
+                                name='ActivationCode'
                                 className={`mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${
                                     errors.Activated_code
                                         ? 'border-red-500'

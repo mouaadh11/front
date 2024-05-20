@@ -1,32 +1,45 @@
-'use client';
-
-import { FaRegPenToSquare } from 'react-icons/fa6';
+'use client'
+import React, { useState, useEffect } from 'react';
 import { MdDeleteOutline } from 'react-icons/md';
 import DataTableAction from './DataTableAction';
-import AddDoctorSideSheet from './AddSheet';
+
 const DataTable = () => {
-    const data = [
-        {
-            id: 1,
-            email: 'tiribrk@gmail.com',
-            phoneNum: '0523316564',
-            createdAt: '2024-05-20T10:44:26.480Z',
-            updatedAt: '2024-05-20T15:38:08.860Z',
-            birthdate: '2003-10-21T00:00:00.000Z',
-            firstName: 'safio',
-            lastName: 'sdsdf',
-        },
-        {
-            id: 2,
-            email: 'example2@example.com',
-            phoneNum: '123-456-7890',
-            createdAt: '2024-05-21T11:22:33.000Z',
-            updatedAt: '2024-05-21T13:44:55.000Z',
-            birthdate: '1995-08-15T00:00:00.000Z',
-            firstName: 'John',
-            lastName: 'Doe',
-        },
-    ];
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const user = localStorage.getItem('user');
+            if (!user) {
+                console.error('User not found in local storage');
+                return;
+            }
+
+            // Parse user object and get userId
+            const parsedUser = JSON.parse(user);
+            const userId = parsedUser.id;
+
+            try {
+                const response = await fetch('http://localhost:5000/user/doctors', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        UserId: userId,
+                    }),
+                });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok.');
+                }
+                const responseData = await response.json();
+                setData(responseData);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []); // Empty dependency array to run the effect only once on component mount
 
     const formatDate = (dateString) => {
         const dateObject = new Date(dateString);
@@ -41,41 +54,28 @@ const DataTable = () => {
             <table className='min-w-full border-collapse table-auto'>
                 <thead>
                     <tr className='bg-gray-800 text-white'>
-                        <th className='py-2 px-4 '>First Name</th>
+                        <th className='py-2 px-4'>First Name</th>
                         <th className='py-2 px-4'>Last Name</th>
                         <th className='py-2 px-4'>Email</th>
                         <th className='py-2 px-4'>Phone Number</th>
                         <th className='py-2 px-4'>Created At</th>
                         <th className='py-2 px-4'>Updated At</th>
                         <th className='py-2 px-4'>Birthdate</th>
-
-                        <div className='py-2 px-4'>
-                            {/* <AddDoctorSideSheet /> */}
-                        </div>
+                        <th className='py-2 px-4'>Actions</th>
                     </tr>
                 </thead>
                 <tbody className='bg-gray-200 text-gray-700'>
                     {data.map((item) => (
-                        <tr
-                            key={item.id}
-                            className='border-b'
-                        >
+                        <tr key={item.id} className='border-b'>
                             <td className='py-2 px-4'>{item.firstName}</td>
                             <td className='py-2 px-4'>{item.lastName}</td>
                             <td className='py-2 px-4'>{item.email}</td>
                             <td className='py-2 px-4'>{item.phoneNum}</td>
-                            <td className='py-2 px-4'>
-                                {formatDate(item.createdAt)}
-                            </td>
-                            <td className='py-2 px-4'>
-                                {formatDate(item.updatedAt)}
-                            </td>
-                            <td className='py-2 px-4'>
-                                {formatDate(item.birthdate)}
-                            </td>
-
+                            <td className='py-2 px-4'>{formatDate(item.createdAt)}</td>
+                            <td className='py-2 px-4'>{formatDate(item.updatedAt)}</td>
+                            <td className='py-2 px-4'>{formatDate(item.birthdate)}</td>
                             <td className=''>
-                                <DataTableAction />
+                                <DataTableAction itemId={item.id} />
                             </td>
                         </tr>
                     ))}

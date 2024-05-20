@@ -5,6 +5,8 @@ import { PiUsersFourLight } from "react-icons/pi";
 import { useContext } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { GlobalContext } from "../../context";
+import { VscPulse } from "react-icons/vsc";
+
 import Link from "next/link";
 const menuItems = [
   {
@@ -17,7 +19,7 @@ const menuItems = [
     id: "devices",
     label: "Devices",
     path: "/devices",
-    icon: <TbBrandProducthunt size={25} />,
+    icon: <VscPulse size={25} />
   },
   {
     id: "patients",
