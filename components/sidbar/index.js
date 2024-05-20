@@ -41,7 +41,7 @@ export default function Sidbar() {
       {console.log(SidbarOpen)}
       <div className="flex items-center justify-between gap-2 p-4 px-6 lg:py-6.5">
         <Link href="/" className="text-[40px] text-[#e5f1fb]">
-          App Name
+          Med Sync
         </Link>
       </div>
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear">

@@ -9,6 +9,13 @@ export default function () {
   const { selectedPatient, appointments } = useContext(GlobalContext);
   const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
 
+  const dueAppointments = appointments && appointments.filter(
+    (appointment) => appointment.AppState === "due"
+  );
+  const appointmentData = dueAppointments && dueAppointments.filter(
+    (obj) => obj.AccountOwner === selectedPatient.id
+  );
+  console.log("appointments for a signle patient", appointmentData);
   const handleClose = () => {
     setAsideOpenStatus(
       Object.keys(asideOpenStatus).reduce((acc, key) => {
@@ -104,7 +111,7 @@ export default function () {
 
             <div className="overflow-hidden w-full">
               {
-                (selectedPatient.hasDevice ) ? <ChartLine data={data} /> : <ChartLine data={[]} />
+                (selectedPatient.hasDevice ) ? <ChartLine /> : <ChartLine data={[]} />
               }
                
             </div>

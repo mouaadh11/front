@@ -225,7 +225,7 @@ export default function Dashboard() {
             <Line data={data} options={options} />
           </div> */}
         </div>
-        <div className="w-full flex flex-row ">
+        <div className="w-full h-[80vh] flex flex-row ">
           {console.log("notification", notifications)}
           {notifications !== null && patients !== null && (
             <DashboardNotifiction notifications={notifications} />

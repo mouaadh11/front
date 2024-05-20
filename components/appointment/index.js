@@ -72,7 +72,7 @@ export default function Appointment({ appointments }) {
   }
   return (
     <>
-      <div className="relative bg-slate-100 w-full h-fit overflow-hidden p-2 border-l-2 border-grey-400">
+      <div className="relative bg-slate-100 w-full overflow-hidden p-2 border-l-2 border-grey-400">
         <div className="sticky border-b-2 p-2 flex flex-row justify-between items-center">
           <h1 className="text-gray-600 text-3xl">Appointments</h1>
           <button
@@ -90,7 +90,7 @@ export default function Appointment({ appointments }) {
             <img className="w-6" src="/filter.svg" alt="filter" />
           </button>
         </div>
-        <ul className="flex flex-col overflow-y-auto h-[85vh] px-2 py-4 gap-2">
+        <ul className="flex flex-col overflow-auto h-[60vh] px-2 py-4 gap-2">
           {console.log("appointments from comp:", appointments)}
           {filteredAppointments &&
             filteredAppointments.map((appointment, index) => (
