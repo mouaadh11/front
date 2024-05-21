@@ -9,12 +9,12 @@ export default function () {
   const { selectedPatient, appointments } = useContext(GlobalContext);
   const { asideOpenStatus, setAsideOpenStatus } = useContext(GlobalContext);
 
-  const dueAppointments = appointments && appointments.filter(
-    (appointment) => appointment.AppState === "due"
-  );
-  const appointmentData = dueAppointments && dueAppointments.filter(
-    (obj) => obj.AccountOwner === selectedPatient.id
-  );
+  const dueAppointments =
+    appointments &&
+    appointments.filter((appointment) => appointment.AppState === "due");
+  const appointmentData =
+    dueAppointments &&
+    dueAppointments.filter((obj) => obj.AccountOwner === selectedPatient.id);
   console.log("appointments for a signle patient", appointmentData);
   const handleClose = () => {
     setAsideOpenStatus(
@@ -107,19 +107,16 @@ export default function () {
         </div>
         <div className="flex flex-col justify-between">
           <div>
-            { <ProfileCard />}
+            {selectedPatient && <ProfileCard />}
 
             <div className="overflow-hidden w-full">
-              {
-                (selectedPatient.hasDevice ) ? <ChartLine /> : <ChartLine data={[]} />
-              }
-               
+              {selectedPatient.hasDevice ? (
+                <ChartLine />
+              ) : (
+                <ChartLine data={[]} />
+              )}
             </div>
-            {selectedPatient ? (
-              <ProfileNotes />
-            ) : (
-              <p>No notes available for this patient.</p>
-            )}
+            {selectedPatient && <ProfileNotes />}
           </div>
         </div>
       </div>

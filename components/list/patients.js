@@ -34,7 +34,7 @@ export default function ({ patients }) {
     <>
       <div className="relative w-full h-[87vh] overflow-y-scroll ">
         <div className="sticky top-0 z-999 flex items-center w-full text-gray-700 px-2 py-4 bg-blue-50 ">
-          <input
+          {/* <input
             type="text"
             className="w-full px-4 py-2 rounded-md border border-blue-300 focus:outline-none focus:ring-1 focus:ring-[#fb7c32] focus:border-[#fb7c32]"
             placeholder="Serach using ID, Name,..."
@@ -56,7 +56,7 @@ export default function ({ patients }) {
                 clipRule="evenodd"
               />
             </svg>
-          </button>
+          </button> */}
         </div>
         <ul className="w-full border-t-2 ">
           {patients.map((patient) => (

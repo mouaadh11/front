@@ -104,12 +104,12 @@ export default function Appointment({ appointments }) {
                       {
                         patients.find(
                           (obj) => obj.id === appointment.AccountOwner
-                        ).firstName
+                        )?.firstName
                       }{" "}
                       {
                         patients.find(
                           (obj) => obj.id === appointment.AccountOwner
-                        ).lastName
+                        )?.lastName
                       }
                     </h3>
                     <input

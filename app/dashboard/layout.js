@@ -11,7 +11,7 @@ import ConfigureDevice from "@/components/configureDevice";
 export default function DashboardLayout({ children }) {
   const { buttonsList } = useContext(GlobalContext);
   const { asideOpenStatus } = useContext(GlobalContext);
-  const { headerTitle, fetchPatients, fetchAppointments, fetchNotifications } = useContext(GlobalContext);
+  const { headerTitle, fetchPatients, fetchAppointments, fetchNotifications, seletedPatient } = useContext(GlobalContext);
   useEffect(() => {
     console.log("waiting for data");
     fetchPatients();
@@ -31,7 +31,10 @@ export default function DashboardLayout({ children }) {
             {children}
           </Suspense>
           <RightAside hiddenElement={asideOpenStatus["registerPanel"]}>
-            <RegisterNewPatient />
+            {
+              <RegisterNewPatient />
+
+            }
           </RightAside>
           <RightAside hiddenElement={asideOpenStatus["configurationPanel"]}>
             <ConfigureDevice />
